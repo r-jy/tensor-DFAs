@@ -19,6 +19,7 @@ def STPVector(row, column):
             print("failed")
             return
     print(rowMultiplied)
+    numpy.lcm
     print(columnMultiplied)
     partitionSize = len(rowMultiplied)//len(columnMultiplied)
     numPartitions = len(columnMultiplied)

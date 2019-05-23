@@ -3,42 +3,51 @@ import copy
 import random
 from Graph import Graph
 class StringGenerator:
-	depth = 0
-	length = 0
+	depth = 0 # not used
+	length = 0 # not used
 	tensor = []
-	accept=set({})
+	accept=set()
 	state = 0
-	transition=set({})
+	symbol = 0
+	transition=set()
+
 	def __init__(self,tensor_input,state_input,accept_input,symbol_input):
-		self.tensor = tensor_input
-		self.accept = accept_input
-		self.symbol = symbol_input
-		self.state = state_input
-		self.accept.remove(0)
-		content = ["empty",[]]
-		row = [ copy.deepcopy(content) for i in range(self.state)]
-		self.path = [copy.deepcopy(row) for i in range(self.state)]
+		self.tensor = tensor_input # make sure to input actual tensor
+		self.accept = accept_input # make sure to input actual accepting states for tensor
+		self.symbol = symbol_input # make sure to input actual alphabet size for tensor
+		self.state = state_input # make sure to input actual number of states for tensor
+
+		# content = ["empty",[]]
+		# row = [ copy.deepcopy(content) for i in range(self.state)]
+		# self.path = [copy.deepcopy(row) for i in range(self.state)]
+
 	def convert(self):
-		for i in range(self.symbol):
-			for j in range(self.state):
-				for k in range(self.state):
-					if self.tensor[i][j][k] ==1:
-						self.transition.add( (j,k,i)) #--> (input/current state, next state,symbol))
+		'''Converts tensor graph to representation as a set of (state, next state, transition symbol) 3-tuples'''
+		for i in range(self.symbol): # iterate through length of alphabet
+			for j in range(self.state): # iterate through number of states
+				for k in range(self.state): # iterate through number of states
+					if self.tensor[i][j][k] == 1:
+						self.transition.add((j, k, i)) #--> (input/current state, next state, symbol))
 		return self.transition
+
 	def export(self):
-		g=Graph(self.state*self.symbol,self.symbol)
-		for i in self.transition:
+		g = Graph(self.state*self.symbol,self.symbol) # Graph(number of states * size of alphabet vertices, size of alphabet names of vertices)
+		for i in self.transition: # iterate through all transitions
+			# We are assigning reference numbers to the start and end states
+			#   Start state is (start state # * transition #)
+			#   End state is   (end   state # * transition #) + transition #
 			start = i[0]*self.symbol
 			end = i[1]*self.symbol+i[2]
-			for j in range(self.symbol):
-				start2 = start+j
+			for j in range(self.symbol): # iterate through all transitions
+				start2 = start + j # Start state now is (start state # * transition #) + alphabet #
 				g.addEdge(start2,end)
-		for i in self.accept:
-			for j in range(self.symbol):
-				for k in range(self.symbol):
-					s = i*self.symbol+j
-					d = k
-					g.printAllPaths(s,d)
+
+		for i in self.accept: # iterate through list of accepting states
+			for j in range(self.symbol): # iterate through alphabet symbols
+				for k in range(self.symbol): # iterate through alphabet symbols
+					# Again, create reference number
+					s = i*self.symbol+j # accepting state number * (size of alphabet - 1) + alphabet symbol
+					g.printAllPaths(s,k)
 '''
 	def generate(self):
 		for i in self.accept:

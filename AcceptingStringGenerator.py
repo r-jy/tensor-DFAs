@@ -43,7 +43,7 @@ def count_walks(symbol_adj_matrix, init_state, acc_state, str_len):
                 # go to adjacent only when number of edges is more than 1
                 if e > 1:
                     for a in range(num_states):  # adjacent of source state
-                        if symbol_adj_matrix[source][a]:  # if there is a transition from source state to a^th state
+                        if symbol_adj_matrix[source][a] == 1:  # if there is a transition from source state to a^th state
                             count[source][dest][e] += count[a][dest][e - 1]
 
     return count[init_state][acc_state][str_len]

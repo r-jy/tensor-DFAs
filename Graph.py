@@ -3,7 +3,7 @@ from collections import defaultdict
 #This class represents a directed graph  
 # using adjacency list representation 
 class Graph: 
-  
+	pathCollection=[]
 	symbol = 10
 	def __init__(self,vertice,symbolNum):
 		#state is number of states
@@ -32,9 +32,8 @@ class Graph:
 		newPath =[]
 		if u ==d:
 			for i in path:
-				newPath.append(i//self.symbol) 
-			print("path: "+str(path))
-			print("new path: "+str(newPath))
+				newPath.append(i//self.symbol)
+			pathCollection.append(newPath)
 		else: 
 			# If current vertex is not destination 
 			#Recur for all the vertices adjacent to this vertex 

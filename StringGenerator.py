@@ -26,7 +26,7 @@ class StringGenerator:
 						self.transition.add( (j,k,i)) #--> (input/current state, next state,symbol))
 		return self.transition
 	def export(self):
-		g=Graph(self.state*self.symbol,self.state)
+		g=Graph(self.state*self.symbol,self.symbol)
 		for i in self.transition:
 			start = i[0]*self.symbol
 			end = i[1]*self.symbol+i[2]

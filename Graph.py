@@ -4,12 +4,12 @@ from collections import defaultdict
 # using adjacency list representation 
 class Graph: 
   
-	state = 10
-	def __init__(self,vertice,stateNum):
+	symbol = 10
+	def __init__(self,vertice,symbolNum):
 		#state is number of states
 		#No. of vertices 
 		self.V= vertice
-		self.state = stateNum	  
+		self.symbol = symbolNum	  
 		# default dictionary to store graph 
 		self.graph = defaultdict(list)  
    
@@ -32,8 +32,9 @@ class Graph:
 		newPath =[]
 		if u ==d:
 			for i in path:
-				newPath.append(i//self.state) 
-			print(newPath) 
+				newPath.append(i//self.symbol) 
+			print("path: "+str(path))
+			print("new path: "+str(newPath))
 		else: 
 			# If current vertex is not destination 
 			#Recur for all the vertices adjacent to this vertex 

@@ -42,12 +42,12 @@ class StringGenerator:
 				start2 = start + j # Start state now is (start state # * transition #) + alphabet #
 				g.addEdge(start2,end)
 
-		for i in self.accept: # iterate through list of accepting states
-			for j in range(self.symbol): # iterate through alphabet symbols
-				for k in range(self.symbol): # iterate through alphabet symbols
+		for accept_state in self.accept: # iterate through list of accepting states
+			for a in range(self.symbol): # iterate through alphabet symbols
+				for d in range(self.symbol): # iterate through alphabet symbols
 					# Again, create reference number
-					s = i*self.symbol+j # accepting state number * (size of alphabet - 1) + alphabet symbol
-					g.printAllPaths(s,k)
+					s = accept_state*self.symbol+a # accepting state number * (size of alphabet - 1) + alphabet symbol
+					g.printAllPaths(s,d)
 '''
 	def generate(self):
 		for i in self.accept:
@@ -60,4 +60,4 @@ class StringGenerator:
 		if currentState = 0:
 			self.path[currentState][pastState]=[True,path]
 		elif currentState != 0:
-'''				
+'''

@@ -1,6 +1,7 @@
 import numpy 
 import random
 import copy
+import STP
 
 class TensorGenerator:
 	start = 0
@@ -9,6 +10,8 @@ class TensorGenerator:
 	symbol=2
 	tensor = []
 	STM = []
+	charID = numpy.array([])
+	stateID = numpy.array([])
 	def __init__(self,stateNum,symbolNum):
 		self.input(stateNum,symbolNum)
 		self.generator()
@@ -22,6 +25,8 @@ class TensorGenerator:
 		row = [0 for i in range(self.state)]
 		matrix = [copy.deepcopy(row) for i in range(self.state)]
 		self.tensor = [copy.deepcopy(matrix) for i in range(self.symbol)]
+		self.charID = numpy.identity(self.symbol)
+		self.stateID = numpy.identity(self.state)
 
 	def randomize(self):
 		numberAccept = random.randrange(0,self.state)
@@ -44,3 +49,17 @@ class TensorGenerator:
 			self.tensor[i] = numpy.transpose(self.tensor[i])
 		self.STM = numpy.concatenate(self.tensor, 1)
 		return self.STM
+
+	def processChar(self, state, char):
+		return self.processCharInternal(self.stateID[:, [state]], char)
+
+	def processCharInternal(self, stateV, char):
+		m1 = STP.STP.compute(self.STM, self.charID[:, [char]])
+		m2 = STP.STP.compute(m1, stateV)
+		return m2
+
+	def processString(self, string):  # runs a string through your DFA and tells you the final state
+		current_state = self.stateID[:, [self.start]]
+		for i in string:
+			current_state = self.processCharInternal(current_state, i)
+		return current_state

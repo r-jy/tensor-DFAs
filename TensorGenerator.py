@@ -30,16 +30,6 @@ class TensorGenerator:
 		self.charID = numpy.identity(self.symbol)
 		self.stateID = numpy.identity(self.state)
 
-	def randomize(self):
-		numberAccept = random.randrange(0,self.state)
-		for i in range(numberAccept):
-			self.accept.add(random.randrange(0,self.state))
-		for i in range(self.symbol):
-			for j in range(self.state):
-				k = random.randrange(0,self.state)
-				self.tensor[i][j][k]=1
-		return self.tensor
-
 	def newRandomize(self):
 		numberAccept = random.randrange(0, self.state)
 		for i in range(numberAccept):
@@ -53,19 +43,34 @@ class TensorGenerator:
 		self.swappedSTM = STP.STP.compute(self.STM, SwapMatrix.SwapMatrix.getMatrix(self.state, self.symbol))
 		return self.STM
 
-	def processChar(self, state, char):
-		return self.processCharInternal(self.stateID[:, [state]], char)
+	def randomize(self):
+		numberAccept = random.randrange(0,self.state)
+		for i in range(numberAccept):
+			self.accept.add(random.randrange(0,self.state))
+		for i in range(self.symbol):
+			for j in range(self.state):
+				k = random.randrange(0,self.state)
+				self.tensor[i][j][k]=1
+		return self.tensor
 
-	def processCharInternal(self, stateV, char):
-		m1 = STP.STP.compute(self.STM, self.charID[:, [char]])
-		m2 = STP.STP.compute(m1, stateV)
-		return m2
+	def checkAccepting(self, string):
+		if self.accept.__contains__(self.processString(string)):
+			return True
+		return False
 
 	def processString(self, string):  # runs a string through your DFA and tells you the final state
 		current_state = self.stateID[:, [self.start]]
 		for i in string:
 			current_state = self.processCharInternal(current_state, i)
 		return self.getNumFromDelta(current_state)
+
+	def processCharInternal(self, stateV, char):
+		m1 = STP.STP.compute(self.STM, self.charID[:, [char]])
+		m2 = STP.STP.compute(m1, stateV)
+		return m2
+
+	def processChar(self, state, char):
+		return self.processCharInternal(self.stateID[:, [state]], char)
 
 	def pathAlgorithm(self, length, initialState, finalState):
 		m = self.symbol
@@ -75,6 +80,7 @@ class TensorGenerator:
 			M = STP.STP.compute(M, self.swappedSTM)
 		iDelta = self.stateID[:, [initialState]]
 		M = STP.STP.compute(M, iDelta)
+		return
 		# print(M)
 		fDelta = self.stateID[:, [finalState]]
 		acceptedColumns = []

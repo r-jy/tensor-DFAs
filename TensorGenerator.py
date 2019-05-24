@@ -2,6 +2,7 @@ import numpy
 import random
 import copy
 import STP
+import SwapMatrix
 
 class TensorGenerator:
 	start = 0
@@ -10,6 +11,7 @@ class TensorGenerator:
 	symbol=2
 	tensor = []
 	STM = []
+	swappedSTM = []
 	charID = numpy.array([])
 	stateID = numpy.array([])
 	def __init__(self,stateNum,symbolNum):
@@ -48,6 +50,7 @@ class TensorGenerator:
 				self.tensor[i][j][k] = 1
 			self.tensor[i] = numpy.transpose(self.tensor[i])
 		self.STM = numpy.concatenate(self.tensor, 1)
+		self.swappedSTM = STP.STP.compute(self.STM, SwapMatrix.SwapMatrix.getMatrix(self.state, self.symbol))
 		return self.STM
 
 	def processChar(self, state, char):
@@ -62,4 +65,50 @@ class TensorGenerator:
 		current_state = self.stateID[:, [self.start]]
 		for i in string:
 			current_state = self.processCharInternal(current_state, i)
-		return current_state
+		return self.getNumFromDelta(current_state)
+
+	def pathAlgorithm(self, length, initialState, finalState):
+		m = self.symbol
+		t = length
+		M = copy.deepcopy(self.swappedSTM)
+		for i in range(length - 1):
+			M = STP.STP.compute(M, self.swappedSTM)
+		iDelta = self.stateID[:, [initialState]]
+		M = STP.STP.compute(M, iDelta)
+		# print(M)
+		fDelta = self.stateID[:, [finalState]]
+		acceptedColumns = []
+		for i in range(len(M[0])):
+			currentColumn = M[:, [i]]
+			if (currentColumn == fDelta).all():
+				acceptedColumns.append(i)
+		# print(acceptedColumns)
+		setOfS = []
+		for j in range(t):
+			tempMatrix = []
+			Im = self.charID
+			ones = numpy.ones(m**(t-1-j))
+			sPart = numpy.kron(Im, ones)
+			for i in range(m**j):
+				tempMatrix.append(sPart)
+			tempMatrix = numpy.concatenate(tempMatrix, 1)
+			setOfS.append(tempMatrix)
+		# print(setOfS)
+		setOfStrings = []
+		bigID = numpy.identity(m**t)
+		for l in acceptedColumns:
+			string = []
+			lDelta = bigID[:, [l]]
+			for j in range(length):
+				charDelta = STP.STP.compute(setOfS[j], lDelta)
+				char = self.getNumFromDelta(charDelta)
+				string.append(char)
+			setOfStrings.append(string)
+		return setOfStrings
+
+	def getNumFromDelta(self, delta):
+		for i in range(len(delta)):
+			if delta[i][0] == 1:
+				return i
+
+

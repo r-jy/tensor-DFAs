@@ -2,10 +2,15 @@
 Contains functions to generate strings that are accepted by a DFA.
 These strings will then be used to train and test a DFA learner
 
-*** RIGHT NOW THERE IS A BUG WHERE THE STRINGS ARE NOT THE CORRECT LENGTHS
-'''
+Note that we are assuming it is okay to cap the length of the strings.
+This makes sense practically, but Angluin suggested in her passive
+learning paper that it might not be.
 
-STRING_LENGTH = 2 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
+Ask Kate if you have questions :)
+'''
+import copy
+
+STRING_LENGTH = 10 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
 
 def get_strings(tensor, acc_state, str_len):
     '''
@@ -22,7 +27,7 @@ def get_strings(tensor, acc_state, str_len):
 
     Returns
     -------
-    set of walks from initial state 0 to acc_state with str_len edges # TODO change to actual walks
+    set of walks from initial state 0 to acc_state with str_len edges
 
     Warnings
     --------
@@ -34,9 +39,12 @@ def get_strings(tensor, acc_state, str_len):
 
     # Initialize table to be filled up using DP. The value string_table[source][dest][e] will
     # store the possible walks from source to dest with exactly e edges
-    string_table = [[[set()] * (str_len + 1)] * num_states] * num_states
-    print(string_table)
+    cell_content = set()
+    row = [copy.deepcopy(cell_content) for i in range(str_len + 1)]
+    matrix = [copy.deepcopy(row) for i in range(num_states)]
+    string_table = [copy.deepcopy(matrix) for i in range(num_states)]
 
+    # Now fill in table
     for e in range(str_len + 1): # Loop for number of state transitions from 0 to str_len
         for source in range(num_states):  # for source
             for dest in range(num_states):  # for destination
@@ -46,6 +54,7 @@ def get_strings(tensor, acc_state, str_len):
                     # from base cases
                     if (e == 0) and (source == dest):
                         string_table[source][dest][e].add('')
+
                     if (e == 1) and (sym_adj_matrix[source][dest] == 1):
                         string_table[source][dest][e].add(str(sym))
 
@@ -54,16 +63,18 @@ def get_strings(tensor, acc_state, str_len):
                         for a in range(num_states):  # for every possibly adjacent state
                             if sym_adj_matrix[source][a] == 1:  # if there is a transition from source state to a^th state
                                 str_l = string_table[a][dest][e - 1]
-                                print(str_l)
                                 for string in str_l.copy():
-                                    print(string + str(sym))
-                                    string_table[source][dest][e].add(string + str(sym))
+                                    string_table[source][dest][e].add(str(sym) + string)
 
     return string_table[init_state][acc_state][str_len]
 
 
 def count_wrapper(dfa_tensor):
     for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state
-        # COULD DO-- for i in range(self.MAX_LENGTH): # Find strings of every possible length up to MAX_LENGTH
         strings = get_strings(dfa_tensor.tensor, accepting_state, STRING_LENGTH)
-        print(strings)  # TODO change to actual strings instead of number of strings
+    return strings
+
+if __name__ == "__main__":
+    import TensorGenerator
+    a = TensorGenerator.TensorGenerator(2, 3)
+    b = count_wrapper(a)

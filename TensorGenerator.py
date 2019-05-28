@@ -3,6 +3,7 @@ import random
 import copy
 import STP
 import SwapMatrix
+import time
 
 class TensorGenerator:
 	start = 0
@@ -17,7 +18,7 @@ class TensorGenerator:
 	def __init__(self,stateNum,symbolNum):
 		self.input(stateNum,symbolNum)
 		self.generator()
-		self.newRandomize()
+		self.randomize()
 
 	def input(self,stateNum,symbolNum):
 		self.state = stateNum
@@ -30,19 +31,6 @@ class TensorGenerator:
 		self.charID = numpy.identity(self.symbol)
 		self.stateID = numpy.identity(self.state)
 
-	def newRandomize(self):
-		numberAccept = random.randrange(0, self.state)
-		for i in range(numberAccept):
-			self.accept.add(random.randrange(0, self.state))
-		for i in range(self.symbol):
-			for j in range(self.state):
-				k = random.randrange(0, self.state)
-				self.tensor[i][j][k] = 1
-			self.tensor[i] = numpy.transpose(self.tensor[i])
-		self.STM = numpy.concatenate(self.tensor, 1)
-		self.swappedSTM = STP.STP.compute(self.STM, SwapMatrix.SwapMatrix.getMatrix(self.state, self.symbol))
-		return self.STM
-
 	def randomize(self):
 		numberAccept = random.randrange(1,self.state)
 		for i in range(numberAccept):
@@ -51,6 +39,11 @@ class TensorGenerator:
 			for j in range(self.state):
 				k = random.randrange(0,self.state)
 				self.tensor[i][j][k]=1
+		temptensor = []
+		for i in range(self.symbol):
+			temptensor.append(numpy.transpose(self.tensor[i]))
+		self.STM = numpy.concatenate(temptensor, 1)
+		self.swappedSTM = STP.STP.compute(self.STM, SwapMatrix.SwapMatrix.getMatrix(self.state, self.symbol))
 		return self.tensor
 
 	def checkAccepting(self, string):
@@ -71,45 +64,6 @@ class TensorGenerator:
 
 	def processChar(self, state, char):
 		return self.processCharInternal(self.stateID[:, [state]], char)
-
-	def pathAlgorithm(self, length, initialState, finalState):
-		m = self.symbol
-		t = length
-		M = copy.deepcopy(self.swappedSTM)
-		for i in range(length - 1):
-			M = STP.STP.compute(M, self.swappedSTM)
-		iDelta = self.stateID[:, [initialState]]
-		M = STP.STP.compute(M, iDelta)
-		# print(M)
-		fDelta = self.stateID[:, [finalState]]
-		acceptedColumns = []
-		for i in range(len(M[0])):
-			currentColumn = M[:, [i]]
-			if (currentColumn == fDelta).all():
-				acceptedColumns.append(i)
-		# print(acceptedColumns)
-		setOfS = []
-		for j in range(t):
-			tempMatrix = []
-			Im = self.charID
-			ones = numpy.ones(m**(t-1-j))
-			sPart = numpy.kron(Im, ones)
-			for i in range(m**j):
-				tempMatrix.append(sPart)
-			tempMatrix = numpy.concatenate(tempMatrix, 1)
-			setOfS.append(tempMatrix)
-		# print(setOfS)
-		setOfStrings = []
-		bigID = numpy.identity(m**t)
-		for l in acceptedColumns:
-			string = []
-			lDelta = bigID[:, [l]]
-			for j in range(length):
-				charDelta = STP.STP.compute(setOfS[j], lDelta)
-				char = self.getNumFromDelta(charDelta)
-				string.append(char)
-			setOfStrings.append(string)
-		return setOfStrings
 
 	def getNumFromDelta(self, delta):
 		for i in range(len(delta)):

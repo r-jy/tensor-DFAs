@@ -6,7 +6,7 @@ import SwapMatrix
 
 class TensorGenerator:
 	start = 0
-	accept={0}
+	accept=set()
 	state=2
 	symbol=2
 	tensor = []
@@ -44,7 +44,7 @@ class TensorGenerator:
 		return self.STM
 
 	def randomize(self):
-		numberAccept = random.randrange(0,self.state)
+		numberAccept = random.randrange(1,self.state)
 		for i in range(numberAccept):
 			self.accept.add(random.randrange(0,self.state))
 		for i in range(self.symbol):
@@ -80,7 +80,6 @@ class TensorGenerator:
 			M = STP.STP.compute(M, self.swappedSTM)
 		iDelta = self.stateID[:, [initialState]]
 		M = STP.STP.compute(M, iDelta)
-		return
 		# print(M)
 		fDelta = self.stateID[:, [finalState]]
 		acceptedColumns = []

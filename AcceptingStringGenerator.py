@@ -10,6 +10,7 @@ Ask Kate if you have questions :)
 '''
 import copy
 
+global STRING_LENGTH
 STRING_LENGTH = 10 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
 
 def get_strings(tensor, acc_state, str_len):
@@ -70,8 +71,11 @@ def get_strings(tensor, acc_state, str_len):
 
 
 def count_wrapper(dfa_tensor):
-    for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state
-        strings = get_strings(dfa_tensor.tensor, accepting_state, STRING_LENGTH)
+    strings = []
+    for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
+        tens = dfa_tensor.tensor # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
+        for string in get_strings(tens, accepting_state, STRING_LENGTH):
+            strings.append(string)
     return strings
 
 if __name__ == "__main__":

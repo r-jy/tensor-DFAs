@@ -28,4 +28,3 @@ class TensorGenerator:
 				k = random.randrange(0,self.state)
 				self.tensor[i][j][k]=1
 		return self.tensor
-

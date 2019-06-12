@@ -47,7 +47,7 @@ class TensorGenerator:
 		return self.tensor
 
 	def checkAccepting(self, string):
-		if self.accept.__contains__(self.processString(string)):
+		if self.accept.__contains__(self.iterString(string)):
 			return True
 		return False
 
@@ -64,6 +64,31 @@ class TensorGenerator:
 
 	def processChar(self, state, char):
 		return self.processCharInternal(self.stateID[:, [state]], char)
+
+	def iterString(self, string):
+		current_state = self.start
+		for i in string:
+			current_state = self.iterCharInternal(current_state, i)
+		return current_state
+
+	def iterCharInternal(self, state, char):
+		row = self.tensor[char][state]
+		newstate = 0
+		for i in range(len(row)):
+			if row[i] == 1:
+				newstate = i
+				break
+		return newstate
+
+	def timeTest(self, string):
+		time1 = time.time()
+		self.processString(string)
+		time1 = time.time() - time1
+		print(time1)
+		time2 = time.time()
+		self.iterString(string)
+		time2 = time.time() - time2
+		return [time1, time2]
 
 	def getNumFromDelta(self, delta):
 		for i in range(len(delta)):

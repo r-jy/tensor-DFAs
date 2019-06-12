@@ -107,6 +107,7 @@ def sim():
     inaccurate = 0
 
     for i in range(NUM_SIM):
+        print(i)
         test_dfa = get_dfa(NUM_STATES, NUM_SYM)
         accuracy = test_accuracy(test_dfa, training_data)
 

@@ -16,6 +16,7 @@ class TensorGenerator:
 	charID = numpy.array([])
 	stateID = numpy.array([])
 	def __init__(self,stateNum,symbolNum):
+		self.accept.clear()
 		self.input(stateNum,symbolNum)
 		self.generator()
 		self.randomize()
@@ -34,7 +35,7 @@ class TensorGenerator:
 	def randomize(self):
 		numberAccept = random.randrange(1,self.state)
 		for i in range(numberAccept):
-			self.accept.add(random.randrange(0,self.state))
+			self.accept.add(random.randrange(0,self.state-1))
 		for i in range(self.symbol):
 			for j in range(self.state):
 				k = random.randrange(0,self.state)

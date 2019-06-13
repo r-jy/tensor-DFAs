@@ -6,9 +6,9 @@ import numpy as np
 
 NUM_STATES = 5 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
-NUM_EXAMPLES = 100 # number of training examples (WARNING: might not work as intended if this is odd)
+NUM_EXAMPLES = 300 # number of training examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = AcceptingStringGenerator.STRING_LENGTH # length of strings in training data
-NUM_SIM = 100 # number of random DFAs to test on training data
+NUM_SIM = 200 # number of random DFAs to test on training data
 Q_MIN = .3 # proportion of strings in training data that must be correctly classified as acccepting or rejecting for a DFA to be considered approximately correct
 
 
@@ -114,8 +114,8 @@ def sim():
     '''
 
     target_tens = get_dfa(NUM_STATES, NUM_SYM) # Randomly generate a target DFA, from which we will get training data
-    training_data = get_examples(target_tens)
-    #training_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
+    #training_data = get_examples(target_tens)
+    training_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
 
     accurate = 0
     inaccurate = 0

@@ -2,13 +2,14 @@
 import TensorGenerator
 import random
 import AcceptingStringGenerator
+import numpy as np
 
+NUM_STATES = 5 # number of states in target DFA (and randomly sampled test DFAs)
+NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
 NUM_EXAMPLES = 100 # number of training examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = AcceptingStringGenerator.STRING_LENGTH # length of strings in training data
-NUM_SIM = 1000 # number of random DFAs to test
-NUM_STATES = 5 # number of states in target DFA
-NUM_SYM = 2 # number of symbols in alphabet
-Q_MIN = .85 # proportion of strings in training data that must be correctly classified as acccepting or rejecting for a DFA to be considered approximately correct
+NUM_SIM = 100 # number of random DFAs to test on training data
+Q_MIN = .3 # proportion of strings in training data that must be correctly classified as acccepting or rejecting for a DFA to be considered approximately correct
 
 
 # 1. Randomly generate DFA and training data
@@ -16,12 +17,7 @@ Q_MIN = .85 # proportion of strings in training data that must be correctly clas
 
 def get_dfa(state_num, sym_num):
     '''
-    Randomly generates a target DFA, from which we will get training data
-
-    Parameters
-    ----------
-    state_num: int
-    sym_num: int
+    Randomly generates a DFA with state_num states and sym_num symbols in its alphabet
 
     Returns
     -------
@@ -65,7 +61,6 @@ def get_examples(target_tens):
             datum_str = random.choice(accepted_str)
             training_data[datum_str] = True
 
-    print(training_data)
     return training_data
 
 
@@ -93,6 +88,24 @@ def test_accuracy(dfa_tens, training_data):
     return correct/(correct + failed)
 
 
+def generator():
+    sampleSet = {}
+    numSample = NUM_EXAMPLES
+    while len(sampleSet) < numSample:
+
+        sample = tuple([np.random.randint(2) for i in range(np.random.randint(STR_LENGTH))])
+
+        if len(sample) > 0:
+            s = "".join(map(str, sample))
+            result = int(int(s, 2) % 5 == 0)
+        else:
+            s = ''
+            result = 1
+
+        sampleSet[s] = result
+
+    return sampleSet
+
 
 def sim():
     '''
@@ -100,8 +113,9 @@ def sim():
     correct (within Q_MIN accuracy)
     '''
 
-    target_tens = get_dfa(NUM_STATES, NUM_SYM)
+    target_tens = get_dfa(NUM_STATES, NUM_SYM) # Randomly generate a target DFA, from which we will get training data
     training_data = get_examples(target_tens)
+    #training_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
 
     accurate = 0
     inaccurate = 0

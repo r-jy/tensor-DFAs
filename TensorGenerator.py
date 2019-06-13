@@ -15,6 +15,7 @@ class TensorGenerator:
 	swappedSTM = []
 	charID = numpy.array([])
 	stateID = numpy.array([])
+
 	def __init__(self,stateNum,symbolNum):
 		self.accept.clear()
 		self.input(stateNum,symbolNum)

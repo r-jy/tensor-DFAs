@@ -6,14 +6,13 @@ import numpy as np
 
 NUM_STATES = 5 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
-NUM_EXAMPLES = 100 # number of training examples (WARNING: might not work as intended if this is odd)
+NUM_EXAMPLES = 1000 # number of training examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = AcceptingStringGenerator.STRING_LENGTH # length of strings in training data
-NUM_SIM = 100 # number of random DFAs to test on training data
+NUM_SIM = 1000 # number of random DFAs to test on training data
 Q_MIN = .3 # proportion of strings in training data that must be correctly classified as acccepting or rejecting for a DFA to be considered approximately correct
 
 
 # 1. Randomly generate DFA and training data
-# TODO check connectivity
 
 def get_dfa(state_num, sym_num):
     '''
@@ -23,7 +22,23 @@ def get_dfa(state_num, sym_num):
     -------
     TensorGenerator object (which is a DFA tensor)
     '''
-    return TensorGenerator.TensorGenerator(state_num, sym_num)
+    dfa = TensorGenerator.TensorGenerator(state_num, sym_num)
+
+    # check connectivity
+    connected = True
+    for dest_state in range(1,state_num):
+        if connected == True:
+            connected = False
+            for str_len in range(1,state_num):
+                if connected == False:
+                    if AcceptingStringGenerator.get_strings(dfa.tensor, dest_state, str_len) != set():
+                        connected = True
+        else: connected = False
+
+    if connected:
+        return dfa
+    else:
+        return get_dfa(state_num, sym_num)
 
 
 def get_examples(target_tens):
@@ -64,7 +79,7 @@ def get_examples(target_tens):
     return training_data
 
 
-# 2. Randomly sample DFAs and test whether it accepts training data
+# 2. Randomly sample DFAs and test whether they accepts training data
 
 
 def test_accuracy(dfa_tens, training_data):
@@ -72,11 +87,11 @@ def test_accuracy(dfa_tens, training_data):
 
     Parameters
     ----------
-    dfa_tens
-
+    dfa_tens: TensorGenerator object
+     tensor on which to test accuracy on training data
     Returns
     -------
-
+    proportion of training_data samples that are correctly classified by dfa_tens
     '''
     correct = 0
     failed = 0
@@ -128,4 +143,22 @@ def sim():
         else: inaccurate += 1
 
     return accurate/(accurate + inaccurate)
+
+def sim2():
+    '''
+    Returns list of accuracies of DFAs with n or fewer states
+    '''
+
+    target_tens = get_dfa(NUM_STATES, NUM_SYM) # Randomly generate a target DFA, from which we will get training data
+    training_data = get_examples(target_tens)
+    #training_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
+
+    accuracy_l = []
+
+    for i in range(NUM_SIM):
+        test_dfa = get_dfa(NUM_STATES, NUM_SYM)
+        accuracy = test_accuracy(test_dfa, training_data)
+        accuracy_l.append(accuracy)
+
+    return accuracy_l
 

@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2725313-c5fc-44d5-8fb4-c29fbf420053" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.DfaTensor.py.swp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.Graph.py.swp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/divisible_by_5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Figure_0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Figure_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Figure_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reachable.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AccuracyGraphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/AccuracyGraphs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DfaSearchSim.py" beforeDir="false" afterPath="$PROJECT_DIR$/DfaSearchSim.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TensorGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/TensorGenerator.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -56,8 +62,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DfaSearchSim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+            <state relative-caret-position="165">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
               <folding>
                 <element signature="e#108#130#0" expanded="true" />
               </folding>
@@ -68,8 +74,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AccuracyGraphs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="46" column="6" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="6" />
+            <state relative-caret-position="95">
+              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -125,8 +131,8 @@
         <option value="$PROJECT_DIR$/TensorGenerator2.py" />
         <option value="$PROJECT_DIR$/AcceptingStringGenerator.py" />
         <option value="$PROJECT_DIR$/STP.py" />
-        <option value="$PROJECT_DIR$/AccuracyGraphs.py" />
         <option value="$PROJECT_DIR$/TensorGenerator.py" />
+        <option value="$PROJECT_DIR$/AccuracyGraphs.py" />
         <option value="$PROJECT_DIR$/DfaSearchSim.py" />
       </list>
     </option>
@@ -401,14 +407,14 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32784638" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49928263" visible="true" weight="0.32647464" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928263" weight="0.32647464" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39786586" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49928263" weight="0.32784638" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4985653" weight="0.32784638" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49569583" weight="0.32921812" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50071734" side_tool="true" visible="true" weight="0.32647464" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.4949785" visible="true" weight="0.32921812" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5050215" side_tool="true" visible="true" weight="0.32921812" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.4978479" weight="0.3580247" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -543,16 +549,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AccuracyGraphs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="46" column="6" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TensorGenerator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -563,10 +559,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/AccuracyGraphs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DfaSearchSim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        <state relative-caret-position="165">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="e#108#130#0" expanded="true" />
           </folding>

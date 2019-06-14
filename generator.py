@@ -5,12 +5,13 @@ import DfaSearchSim
 NUM_EXAMPLES = 200
 ty = "uniform"
 
-def generator_uniform(option, n=0):
+def generator_uniform(option, n=(0, 0)):
     posSet = {}
     negSet = {}
     def generator_g():
         if option == 'switch': return generator_switch()
-        if option == 'right': return generator_nth_from_right(n)
+        if option == 'right': return generator_nth_from_right(n[0])
+        if option == 'div': return generator_divn(n)
     while len(posSet) < NUM_EXAMPLES/2 or len(negSet) < NUM_EXAMPLES/2:
         sample,result = generator_g()
         if result == 1: posSet[sample] = result
@@ -62,21 +63,10 @@ def generator_nth_from_right(n):
     return s,result
 
 def generator_divn(n):
-    sampleSet = {}
-    numSample = NUM_EXAMPLES
-    while len(sampleSet) < numSample:
-
-        sample = tuple([np.random.randint(2) for i in range(np.random.randint(STR_LENGTH))])
-
-        if len(sample) > 0:
-            s = "".join(map(str, sample))
-            result = int(int(s, 2) % n == 0)
-        else:
-            s = ''
-            result = 1
-
-        sampleSet[s] = result
-    return sampleSet
+    sample = tuple([np.random.randint(2) for i in range(np.random.randint(1,DfaSearchSim.STR_LENGTH))])
+    s = "".join(map(str, sample))
+    result = int(int(s,2) % n[0] == n[1])
+    return s, result
 
 def dict2tuple_set(dictionary):
     tuple_set = set()

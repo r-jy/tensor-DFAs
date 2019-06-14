@@ -12,7 +12,6 @@ def run_sim():
 	'''
 	q_min_l = []
 	approx_dfa_l = []
-	q_min_ind_l =[]
 
 	for i in range(NUM_Q_MIN+1):
 		q_min = i/NUM_Q_MIN
@@ -29,12 +28,12 @@ def run_sim():
 			print("--------------------------------------")
 			approx_dfa_l.append(dfaSum)
 			dfa_list.append(dfaSum)
-		q_min_ind_l.append([q_list,dfa_list])
-	return q_min_l, approx_dfa_l, q_min_ind_l
+	return q_min_l, approx_dfa_l
 
 
 if __name__ == "__main__":
-	q_min_l, approx_dfa_l, individual_dis = run_sim()
+
+	q_min_l, approx_dfa_l = run_sim()
 	plt.figure(0)
 	plt.scatter(q_min_l, approx_dfa_l)
 	plt.title('Proportion of Randomly-Sampled DFAs that are Approximately Accurate')
@@ -45,11 +44,6 @@ if __name__ == "__main__":
 	plt.text(0.92, 0.8, textstr, fontsize=14, fontweight='bold', transform=plt.gcf().transFigure)
 	textstr = 'Constants'
 	plt.text(0.92, .3, textstr2, fontsize=14, transform=plt.gcf().transFigure)
-	plt.figure(1)
-	plt.scatter(individual_dis[20][0], individual_dis[20][1])
-	plt.title('distribution for a specific q_min')
-	plt.xlabel('q_min') #approximately accurate threshold proportion of correctly classified DFAs
-	plt.ylabel('approximately accurate proportion')
 
 	plt.show()
 #	plt.figure(figsize = (10, 4.8))

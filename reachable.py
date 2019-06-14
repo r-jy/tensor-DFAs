@@ -1,4 +1,4 @@
-import numpy as np
+import numpy
 import copy
 '''
 rows as input and columns as output. a[x][y]=1 iff x is input and y is output
@@ -11,12 +11,12 @@ def reachable(tensor, accepts):
 	# 1. create reachability matrix by combing transition matrix per alphabet
 
 	#matrix is reability matrix
-	matrix = tensor[0]
+	matrix = tensor[0].copy()
 	
 	#created by combing all alphabet transitions
 	if len(tensor)>1:
 		for i in range(1,len(tensor)):
-			matrix += tensor[i]
+			matrix = numpy.add(matrix, tensor[i])
 
 	# 2. TO DO: get transpose for final states
 
@@ -27,10 +27,30 @@ def reachable(tensor, accepts):
 	workingMatrix = matrix
 	
 	terminalSet = [ copy.deepcopy( set([i]) ) for i in range(numState)]
-	
+	reached = set()
+	reached.clear()
+	reached.add(0)
+	toAnalyze = set()
+	toAnalyze.clear()
+	toAnalyze.add(0)
+	nextAnalysis = set()
+	nextAnalysis.clear()
+	while len(toAnalyze) > 0:
+		for state in toAnalyze:
+			row = matrix[state]
+			for i in range(len(row)):
+				if row[i] > 0:
+					if not reached.__contains__(i):
+						reached.add(i)
+						nextAnalysis.add(i)
+		toAnalyze.clear()
+		toAnalyze = nextAnalysis.copy()
+		nextAnalysis.clear()
+
+	'''
 	for i in range( numState ):
 
-		workingMatrix[i] = [ j if matrix[i][j] == 1 else  0.1 for j in range( numState ) ]
+		workingMatrix[i] = [ j if matrix[i][j] >= 1 else  0.1 for j in range( numState ) ]
 		
 		terminalSet[i] = set(workingMatrix[i])
 		
@@ -40,9 +60,7 @@ def reachable(tensor, accepts):
 	if len( list( terminalSet[0] + accepts ) ) < len( terminalSet[0] ) + len( accepts ) :
 		
 		return True
-	
-	while True:
-		
-def compare():
-	
+	'''
+	return reached
 
+#def compare():

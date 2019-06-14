@@ -106,6 +106,26 @@ def test_accuracy(dfa_tens, training_data):
 def generator():
     sampleSet = {}
     numSample = NUM_EXAMPLES
+    for i in range(numSample):
+        length = random.randint(2, STR_LENGTH)
+        switches = 0
+        string_array = [random.randint(0,1)]
+        for i in range(length - 1):
+            next = random.randint(0,1)
+            string_array.append(next)
+            if next != string_array[i]:
+                switches += 1
+        s = "".join(map(str, string_array))
+        sampleSet[s] = int(switches % 2 == 0)
+
+    '''
+    for i in range(numSample):
+        sample = tuple([np.random.randint(2) for j in range(np.random.randint(4, STR_LENGTH))])
+        s = "".join(map(str, sample))
+        result = int(s[len(s) - 4] == '1')
+        sampleSet[s] = result
+    '''
+    '''
     while len(sampleSet) < numSample:
 
         sample = tuple([np.random.randint(2) for i in range(np.random.randint(STR_LENGTH))])
@@ -118,7 +138,7 @@ def generator():
             result = 1
 
         sampleSet[s] = result
-
+    '''
     return sampleSet
 
 
@@ -128,8 +148,17 @@ def sim():
     correct (within Q_MIN accuracy)
     '''
 
+    tensor_success = False
     target_tens = get_dfa(NUM_STATES, NUM_SYM) # Randomly generate a target DFA, from which we will get training data
-    #training_data = get_examples(target_tens)
+    '''
+    training_data = get_examples(target_tens)
+    while tensor_success is False:
+        if (list(training_data.values()).__contains__(True)):
+            tensor_success = True
+        else:
+            target_tens = get_dfa(NUM_STATES, NUM_SYM)
+            training_data = get_examples(target_tens)
+    '''
     training_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
 
     accurate = 0

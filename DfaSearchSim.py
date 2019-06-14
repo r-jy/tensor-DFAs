@@ -4,7 +4,7 @@ import random
 import AcceptingStringGenerator
 import numpy as np
 
-NUM_STATES = 5 # number of states in target DFA (and randomly sampled test DFAs)
+NUM_STATES = 7 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
 NUM_EXAMPLES = 300 # number of training examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = AcceptingStringGenerator.STRING_LENGTH # length of strings in training data
@@ -97,7 +97,7 @@ def generator():
 
         if len(sample) > 0:
             s = "".join(map(str, sample))
-            result = int(int(s, 2) % 5 == 0)
+            result = int(int(s, 2) % 7 == 0)
         else:
             s = ''
             result = 1

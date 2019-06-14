@@ -36,7 +36,7 @@ class TensorGenerator:
 	def randomize(self):
 		numberAccept = random.randrange(1,self.state)
 		for i in range(numberAccept):
-			self.accept.add(random.randrange(0,self.state-1))
+			self.accept.add(random.randrange(0,self.state))
 		for i in range(self.symbol):
 			for j in range(self.state):
 				k = random.randrange(0,self.state)

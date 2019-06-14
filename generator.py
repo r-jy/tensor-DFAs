@@ -1,11 +1,23 @@
-
+import random
 import numpy as np
+import DfaSearchSim
 
 NUM_EXAMPLES = 200
 ty = "uniform"
-	
 
+def generator_uniform(option, n=0):
+    posSet = {}
+    negSet = {}
+    def generator_g():
+        if option == 'switch': return generator_switch()
+        if option == 'right': return generator_nth_from_right(n)
+    while len(posSet) < NUM_EXAMPLES/2 or len(negSet) < NUM_EXAMPLES/2:
+        sample,result = generator_g()
+        if result == 1: posSet[sample] = result
+        else: negSet[sample] = result
+    return {**posSet, **negSet}
 
+'''
 def generator_uniform():
 	generator_g()=
     sampleSet = {}
@@ -28,35 +40,26 @@ def generator_posneg():
 		if(result
 		sampleNeg[sample]=result
 	return sampleSet
-def generator_switch():
-    sampleSet = {}
-    numSample = NUM_EXAMPLES
-	#number of switches between 0 and 1
-	for i in range(numSample):
-        length = random.randint(2, STR_LENGTH)
-        switches = 0
-        string_array = [random.randint(0,1)]
-        for i in range(length - 1):
-            next = random.randint(0,1)
-            string_array.append(next)
-            if next != string_array[i]:
-                switches += 1
-        s = "".join(map(str, string_array))
-        sampleSet[s] = int(switches % 2 == 0)
-    return sampleSet
+'''
 
-def generator_3rd_dig_1():
-    sampleSet = {}
-    numSample = NUM_EXAMPLES
-    
-	# 3rd ditigits is 1
-	
-    for i in range(numSample):
-        sample = tuple([np.random.randint(2) for j in range(np.random.randint(4, STR_LENGTH))])
-        s = "".join(map(str, sample))
-        result = int(s[len(s) - 4] == '1')
-        sampleSet[s] = result
-    return sampleSet
+
+def generator_switch():
+    length = random.randint(2, DfaSearchSim.STR_LENGTH)
+    switches = 0
+    string_array = [random.randint(0, 1)]
+    for i in range(length - 1):
+        next = random.randint(0, 1)
+        string_array.append(next)
+        if next != string_array[i]:
+            switches += 1
+    s = "".join(map(str, string_array))
+    return s, int(switches % 2 == 0)
+
+def generator_nth_from_right(n):
+    sample = tuple([np.random.randint(2) for j in range(np.random.randint(n + 1, DfaSearchSim.STR_LENGTH + n))])
+    s = "".join(map(str, sample))
+    result = int(s[len(s) - n] == '1')
+    return s,result
 
 def generator_divn(n):
     sampleSet = {}
@@ -74,3 +77,10 @@ def generator_divn(n):
 
         sampleSet[s] = result
     return sampleSet
+
+def dict2tuple_set(dictionary):
+    tuple_set = set()
+    tuple_set.clear()
+    for key in dictionary.keys():
+        tuple_set.add((key, dictionary[key]))
+    return tuple_set

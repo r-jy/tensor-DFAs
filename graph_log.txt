@@ -1,0 +1,7 @@
+Test Number 0
+  NUM_STATES = 7 
+NUM_SYM = 2 
+NUM_DFA = 70 
+STR_LENGTH = 200
+STR AMOUNT= 100 
+Num Trail = 120  reachable

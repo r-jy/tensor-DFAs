@@ -21,7 +21,10 @@ class TensorGenerator:
 		self.input(stateNum,symbolNum)
 		self.generator()
 		self.randomize()
-
+	def outputState(self):
+		return self.tensor
+	def outputAccept(self):
+		return self.accept
 	def input(self,stateNum,symbolNum):
 		self.state = stateNum
 		self.symbol = symbolNum

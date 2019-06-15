@@ -1,7 +1,7 @@
 import random
 import numpy as np
 import DfaSearchSim
-
+STR_LENGTH=500
 NUM_EXAMPLES = 200
 ty = "uniform"
 
@@ -16,7 +16,7 @@ def generator_uniform(option, n=(0, 0)):
         sample,result = generator_g()
         if result == 1: posSet[sample] = result
         else: negSet[sample] = result
-    return {**posSet, **negSet}
+    return [posSet, negSet]
 
 '''
 def generator_uniform():
@@ -45,7 +45,7 @@ def generator_posneg():
 
 
 def generator_switch():
-    length = random.randint(2, DfaSearchSim.STR_LENGTH)
+    length = random.randint(2, STR_LENGTH)
     switches = 0
     string_array = [random.randint(0, 1)]
     for i in range(length - 1):
@@ -57,20 +57,21 @@ def generator_switch():
     return s, int(switches % 2 == 0)
 
 def generator_nth_from_right(n):
-    sample = tuple([np.random.randint(2) for j in range(np.random.randint(n + 1, DfaSearchSim.STR_LENGTH + n))])
+    sample = tuple([np.random.randint(2) for j in range(np.random.randint(n + 1, STR_LENGTH + n))])
     s = "".join(map(str, sample))
     result = int(s[len(s) - n] == '1')
     return s,result
 
 def generator_divn(n):
-    sample = tuple([np.random.randint(2) for i in range(np.random.randint(1,DfaSearchSim.STR_LENGTH))])
+    sample = tuple([np.random.randint(2) for i in range(np.random.randint(1,STR_LENGTH))])
     s = "".join(map(str, sample))
     result = int(int(s,2) % n[0] == n[1])
     return s, result
 
-def dict2tuple_set(dictionary):
-    tuple_set = set()
-    tuple_set.clear()
+def dict2ls(dictionary):
+    tuple_set = []
     for key in dictionary.keys():
-        tuple_set.add((key, dictionary[key]))
+        tuple_set.append((key, dictionary[key]))
     return tuple_set
+
+#def convert(pos,neg):

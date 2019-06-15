@@ -63,4 +63,5 @@ def reachable(tensor, accepts):
 	'''
 	return len(reached.intersection(accepts)) > 0
 
+	
 #def compare():

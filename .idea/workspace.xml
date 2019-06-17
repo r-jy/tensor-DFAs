@@ -2,15 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2725313-c5fc-44d5-8fb4-c29fbf420053" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.DfaTensor.py.swp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.Graph.py.swp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/divisible_by_5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/random dfa graph/Figure_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/random dfa graph/Figure_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/random dfa graph/Figure_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reachable.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccuracyGraphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/AccuracyGraphs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DfaSearchSim.py" beforeDir="false" afterPath="$PROJECT_DIR$/DfaSearchSim.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.pdf.py.swp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot for Multiplicative ALL for  mod 5  DFA Run 0  reachable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot for Multiplicative ALL for  mod 7  DFA Run 1 reachable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot for Multiplicative Means for  mod 5  DFA Run 0  reachable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot for Multiplicative Means for  mod 7  DFA Run 1  reachable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot for Standard Means for  mod 5  DFA Run 0  reachable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot for Standard Means for  mod 7  DFA Run 1  reachable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot for Standard all for  mod 5  DFA Run 0  reachable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plot for Standard all for  mod 7  DFA Run 1 reachable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graph_log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pdf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 50 trials, not reachable (1).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 50 trials, not reachable (2).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 50 trials, not reachable (3).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 50 trials, not reachable (4).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 70 trials (1).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 70 trials (2).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 70 trials (3).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 70 trials (4).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/random dfa graph/Plot of Means Using Multiplicative Score.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TensorGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/TensorGenerator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/divisible_by_5.png" beforeDir="false" afterPath="$PROJECT_DIR$/random dfa graph/divisible_by_5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reachable.py" beforeDir="false" afterPath="$PROJECT_DIR$/reachable.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,6 +48,18 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reachable.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="990">
+              <caret line="67" selection-start-line="67" selection-end-line="67" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/STP.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="150">
@@ -44,7 +71,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Graph.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-131">
+            <state relative-caret-position="180">
               <caret line="12" selection-start-line="12" selection-end-line="12" />
             </state>
           </provider>
@@ -53,29 +80,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AcceptingStringGenerator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-368">
+            <state relative-caret-position="225">
               <caret line="15" column="43" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="43" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DfaSearchSim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
-              <folding>
-                <element signature="e#108#130#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-385">
+              <caret line="41" selection-start-line="41" selection-end-line="41" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AccuracyGraphs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="315">
+              <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -142,6 +166,7 @@
     <option name="width" value="1415" />
     <option name="height" value="821" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -400,7 +425,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="26" width="1415" height="821" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24677187" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -453,9 +477,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="Added function to DfaSearchSim to make target DFA divisibility-by-5 DFA. Also deleted TensorGenerator (NOT TensorGenerator.py)" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/TensorGenerator">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/TensorGenerator" />
     <entry file="file://$USER_HOME$/Library/Caches/PyCharmCE2018.3/python_stubs/1124376657/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -530,7 +552,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Graph.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-131">
+        <state relative-caret-position="180">
           <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
@@ -544,7 +566,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AcceptingStringGenerator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-368">
+        <state relative-caret-position="225">
           <caret line="15" column="43" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="43" />
         </state>
       </provider>
@@ -561,8 +583,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AccuracyGraphs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        <state relative-caret-position="315">
+          <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -571,11 +593,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DfaSearchSim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#108#130#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-385">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
         </state>
       </provider>
     </entry>

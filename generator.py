@@ -2,7 +2,7 @@ import random
 import numpy as np
 import DfaSearchSim
 STR_LENGTH=500
-NUM_EXAMPLES = 200
+NUM_EXAMPLES = 100
 ty = "uniform"
 
 def generator_uniform(option, n=(0, 0)):
@@ -16,6 +16,7 @@ def generator_uniform(option, n=(0, 0)):
         sample,result = generator_g()
         if result == 1: posSet[sample] = result
         else: negSet[sample] = result
+
     return [posSet, negSet]
 
 '''

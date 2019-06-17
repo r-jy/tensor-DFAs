@@ -8,20 +8,20 @@ import numpy as np
 import generator
 import reachable
 import os
-NUM_STATES = 7 # number of states in target DFA (and randomly sampled test DFAs)
+NUM_STATES = 11 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
-NUM_EXAMPLES = 100 # number of testing examples (WARNING: might not work as intended if this is odd)
-STR_LENGTH = 200 # length of strings in testing data
-NUM_SIM = 70 # number of random DFAs to test on testing data
+NUM_EXAMPLES = 500 # number of testing examples (WARNING: might not work as intended if this is odd)
+STR_LENGTH = 10 # length of strings in testing data
+NUM_SIM = 500 # number of random DFAs to test on testing data
 
 NUM_TRIAL = 120
-name  = " mod 7 "
-record = 0
+name  = " mod 11 "
+record = 2
 info ="  reachable"
 
 # MAKE SURE TO CHANGE THE GENERATOR FUNCTION
 
-def sim_posneg(choice0="div",choice1=(7,0)):
+def sim_posneg(choice0="div",choice1=(11,0)):
 	'''
 	Wrapper function to run Monte Carlo simulation with different threshold accuracies (q_min)
 	Could expand to vary more than just parameter q_min
@@ -32,18 +32,20 @@ def sim_posneg(choice0="div",choice1=(7,0)):
 	standardGraph = []
 	standardPointGraph =[]
 	standardPointSet =[]
+	dfa_ls = []
 	for i in range(NUM_TRIAL):
 		print("--------------------------------------")
 		print(   "	  trail   "+str(i))
 		print("--------------------------------------")
-		mean,graph,standard, standardG = single_posneg(choice0,choice1)
+		mean,graph,standard, standardG, dfa_record = single_posneg(choice0,choice1)
 		meanGraph.append(mean)
 		pointGraph = pointGraph + graph
 		pointSet.append(graph)
 		standardGraph.append(standard)
 		standardPointGraph = standardPointGraph + standardG
 		standardPointSet.append(standardG)
-	return meanGraph, pointGraph, pointSet, standardGraph, standardPointGraph, standardPointSet
+		dfa_ls.append(dfa_record)
+	return meanGraph, pointGraph, pointSet, standardGraph, standardPointGraph, standardPointSet,dfa_ls
 
 def single_posneg(choice0,choice1):
 	generator.NUM_EXAMPLES = NUM_EXAMPLES
@@ -51,15 +53,18 @@ def single_posneg(choice0,choice1):
 	positive,negative = generator.generator_uniform(choice0,choice1)
 	accuracyGraph =[]
 	standardGraph = []
+	dfa_record=[]
 	for i in range(NUM_SIM):
 		test_dfa = get_dfa(NUM_STATES,NUM_SYM)
 		#get_dfa(NUM_STATES, NUM_SYM)
 		accuratePos = test_accuracy(test_dfa, positive)
 		accurateNeg = test_accuracy(test_dfa, negative)
 		standard = test_accuracy(test_dfa, {**positive,**negative})
-		accuracyGraph.append( (accuratePos * accurateNeg )**0.5 )
+		accurateMul = (accuratePos * accurateNeg )**0.5 
+		accuracyGraph.append( accurateMul)
 		standardGraph.append( standard )
-	return np.mean(accuracyGraph), accuracyGraph, np.mean(standardGraph), standardGraph
+		dfa_record.append( (accurateMul,standard,test_dfa))
+	return np.mean(accuracyGraph), accuracyGraph, np.mean(standardGraph), standardGraph, dfa_record
 		
 
 
@@ -102,9 +107,9 @@ def get_dfa(state_num, sym_num):
 		reach = False
 
 if __name__ == "__main__":
-	file = os.open("graph_log.txt",os.O_RDWR)
-	mean, points, pointls, standard, standpt, standls = sim_posneg()
-`	textstr2 ="Test Number "+ str(record)+'\n '+' NUM_STATES = ' + str(NUM_STATES) + ' \n' + 'NUM_SYM = ' + str(NUM_SYM) + ' \n' + 'NUM_DFA = ' + str(NUM_SIM) + ' \n' + 'STR_LENGTH = ' + str(STR_LENGTH) + "\nSTR AMOUNT= "+str(NUM_EXAMPLES)+' \n' + 'Num Trail = ' + str(NUM_TRIAL)+ info+ " reachability? " + str(reach)
+	file = os.open("graph_log.txt",os.O_APPEND)
+	mean, points, pointls, standard, standpt, standls,dfa_ls = sim_posneg()
+	textstr2 ="Test Number "+ str(record)+'\n '+' NUM_STATES = ' + str(NUM_STATES) + ' \n' + 'NUM_SYM = ' + str(NUM_SYM) + ' \n' + 'NUM_DFA = ' + str(NUM_SIM) + ' \n' + 'STR_LENGTH = ' + str(STR_LENGTH) + "\nSTR AMOUNT= "+str(NUM_EXAMPLES)+' \n' + 'Num Trail = ' + str(NUM_TRIAL)+ info+ " reachability? " + str(reach)
 	os.write(file,str.encode(textstr2))
 
 	num_bins = 40

@@ -1,7 +1,7 @@
 import random
 import numpy as np
 import DfaSearchSim
-STR_LENGTH=500
+STR_LENGTH=10
 NUM_EXAMPLES = 100
 ty = "uniform"
 
@@ -12,7 +12,7 @@ def generator_uniform(option, n=(0, 0)):
         if option == 'switch': return generator_switch()
         if option == 'right': return generator_nth_from_right(n[0])
         if option == 'div': return generator_divn(n)
-    while len(posSet) < NUM_EXAMPLES/2 or len(negSet) < NUM_EXAMPLES/2:
+    while len(posSet) < NUM_EXAMPLES or len(negSet) < NUM_EXAMPLES:
         sample,result = generator_g()
         if result == 1: posSet[sample] = result
         else: negSet[sample] = result

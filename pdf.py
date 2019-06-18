@@ -8,20 +8,22 @@ import numpy as np
 import generator
 import reachable
 import os
-NUM_STATES = 11 # number of states in target DFA (and randomly sampled test DFAs)
+import scipy.stats as kde
+NUM_STATES = 5 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
-NUM_EXAMPLES = 500 # number of testing examples (WARNING: might not work as intended if this is odd)
+NUM_EXAMPLES = 200 # number of testing examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = 10 # length of strings in testing data
 NUM_SIM = 500 # number of random DFAs to test on testing data
 
-NUM_TRIAL = 120
-name  = " mod 11 "
+NUM_TRIAL = 10
+name  = " mod 5 "
 record = 2
 info ="  reachable"
+reach = True
 
 # MAKE SURE TO CHANGE THE GENERATOR FUNCTION
 
-def sim_posneg(choice0="div",choice1=(11,0)):
+def sim_posneg(choice0="switch",choice1=(0,0)):
 	'''
 	Wrapper function to run Monte Carlo simulation with different threshold accuracies (q_min)
 	Could expand to vary more than just parameter q_min
@@ -35,7 +37,7 @@ def sim_posneg(choice0="div",choice1=(11,0)):
 	dfa_ls = []
 	for i in range(NUM_TRIAL):
 		print("--------------------------------------")
-		print(   "	  trail   "+str(i))
+		print(   "	  trial   "+str(i))
 		print("--------------------------------------")
 		mean,graph,standard, standardG, dfa_record = single_posneg(choice0,choice1)
 		meanGraph.append(mean)
@@ -51,6 +53,7 @@ def single_posneg(choice0,choice1):
 	generator.NUM_EXAMPLES = NUM_EXAMPLES
 	generator.STR_LENGTH = STR_LENGTH
 	positive,negative = generator.generator_uniform(choice0,choice1)
+	print(len({**positive, **negative}))
 	accuracyGraph =[]
 	standardGraph = []
 	dfa_record=[]
@@ -65,11 +68,10 @@ def single_posneg(choice0,choice1):
 		standardGraph.append( standard )
 		dfa_record.append( (accurateMul,standard,test_dfa))
 	return np.mean(accuracyGraph), accuracyGraph, np.mean(standardGraph), standardGraph, dfa_record
-		
 
 
 def test_accuracy(dfa_tens, training_data):
-    '''
+	'''
     Parameters
     ----------
     dfa_tens
@@ -77,14 +79,15 @@ def test_accuracy(dfa_tens, training_data):
     Returns
     -------
     '''
-    correct = 0
-    failed = 0
+	correct = 0
+	failed = 0
 
-    for key in training_data:
-        if training_data[key] == dfa_tens.checkAccepting([int(i) for i in key]): correct += 1
-        else: failed += 1
-    
-    return correct/(correct + failed)
+	for key in training_data:
+		if training_data[key] == dfa_tens.checkAccepting([int(i) for i in key]):
+			correct += 1
+		else:
+			failed += 1
+	return correct / (correct + failed)
 
 def get_dfa(state_num, sym_num):
 	'''
@@ -98,8 +101,7 @@ def get_dfa(state_num, sym_num):
 		con = True
 		while con:
 			dfa = TensorGenerator.TensorGenerator(state_num, sym_num)
-
-		con = not reachable.reachable(dfa.tensor,dfa.accept)	
+			con = not reachable.reachable(dfa.tensor,dfa.accept)
 		return dfa
 		reach = True
 	else:
@@ -107,10 +109,10 @@ def get_dfa(state_num, sym_num):
 		reach = False
 
 if __name__ == "__main__":
-	file = os.open("graph_log.txt",os.O_APPEND)
+	#file = os.open("graph_log.txt",os.O_APPEND)
 	mean, points, pointls, standard, standpt, standls,dfa_ls = sim_posneg()
-	textstr2 ="Test Number "+ str(record)+'\n '+' NUM_STATES = ' + str(NUM_STATES) + ' \n' + 'NUM_SYM = ' + str(NUM_SYM) + ' \n' + 'NUM_DFA = ' + str(NUM_SIM) + ' \n' + 'STR_LENGTH = ' + str(STR_LENGTH) + "\nSTR AMOUNT= "+str(NUM_EXAMPLES)+' \n' + 'Num Trail = ' + str(NUM_TRIAL)+ info+ " reachability? " + str(reach)
-	os.write(file,str.encode(textstr2))
+	#textstr2 ="Test Number "+ str(record)+'\n '+' NUM_STATES = ' + str(NUM_STATES) + ' \n' + 'NUM_SYM = ' + str(NUM_SYM) + ' \n' + 'NUM_DFA = ' + str(NUM_SIM) + ' \n' + 'STR_LENGTH = ' + str(STR_LENGTH) + "\nSTR AMOUNT= "+str(NUM_EXAMPLES)+' \n' + 'Num Trail = ' + str(NUM_TRIAL)+ info+ " reachability? " + str(reach)
+	#os.write(file,str.encode(textstr2))
 
 	num_bins = 40
 	plt.figure(0)
@@ -132,6 +134,11 @@ if __name__ == "__main__":
 	plt.xlabel('pos and neg accuracy') #approximately accurate threshold proportion of correctly classified DFAs
 	plt.ylabel('proportion')
 	plt.savefig(title)
+	plt.figure(5)
+	plt.plot(np.linspace(0, max(points), 100), kde.gaussian_kde(points)(np.linspace(0, 1, 100)))
+	plt.title(title)
+	plt.savefig(title)
+
 	#############################################
 
 	plt.figure(2)
@@ -152,6 +159,11 @@ if __name__ == "__main__":
 	plt.ylabel('proportion')
 	#textstr = 'Constants'
 	plt.savefig(title)
+	plt.figure(6)
+	plt.title(title)
+	plt.plot(np.linspace(0, max(points), 100), kde.gaussian_kde(standpt)(np.linspace(0, 1, 100)))
+	plt.xlabel('standard accuracy')
+	plt.ylabel('proportion')
 	plt.show()
 	
-	os.close(file)
+	#os.close(file)

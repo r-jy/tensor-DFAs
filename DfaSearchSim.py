@@ -6,17 +6,25 @@ import numpy as np
 
 NUM_STATES = 7 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
-NUM_EXAMPLES = 300 # number of training examples (WARNING: might not work as intended if this is odd)
+NUM_EXAMPLES = 700 # number of training examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = AcceptingStringGenerator.STRING_LENGTH # length of strings in training data
-NUM_SIM = 200 # number of random DFAs to test on training data
+NUM_SIM = 50 # number of random DFAs to test on training data
 Q_MIN = .3 # proportion of strings in training data that must be correctly classified as acccepting or rejecting for a DFA to be considered approximately correct
-
+ACCURACY_TYPE = 'standard_accuracy'
 
 # 1. Randomly generate DFA and training data
 
 def get_dfa(state_num, sym_num):
     '''
-    Randomly generates a DFA with state_num states and sym_num symbols in its alphabet
+    Randomly generates a DFA (tensor representation) with state_num states
+    and sym_num symbols in its alphabet
+
+    Parameters
+    ----------
+    state_num: int
+      number of states in DFA to generate
+    sym_num: int
+      cardinality of alphabet in DFA to generate
 
     Returns
     -------
@@ -57,7 +65,7 @@ def get_examples(target_tens):
     -------
     dictionary of training examples
     '''
-    training_data = {}
+    test_data = {}
 
     # Generate NUM_EXAMPLES/2 random strings
     # We're assuming these will probably not be accepted so we'll have a 50/50 dist acc/rej strings
@@ -67,40 +75,101 @@ def get_examples(target_tens):
         for i in range(STR_LENGTH):
             datum_str += str(random.randint(0,NUM_SYM-1)) # make a list of characters to test
         accepted = target_tens.checkAccepting([int(i) for i in datum_str])
-        training_data[datum_str] = accepted
+        test_data[datum_str] = accepted
 
     # Generate NUM_EXAMPLES/2 accepted strings
     accepted_str = AcceptingStringGenerator.count_wrapper(target_tens)
     if len(accepted_str) > 0:
         for datum in range(NUM_EXAMPLES//2):
             datum_str = random.choice(accepted_str)
-            training_data[datum_str] = True
+            test_data[datum_str] = True
 
-    return training_data
-
-
-# 2. Randomly sample DFAs and test whether they accepts training data
+    return test_data
 
 
-def test_accuracy(dfa_tens, training_data):
-    '''
+# 2. Randomly sample DFAs and test whether they accept training data
+
+
+def standard_accuracy(dfa_tens, test_data):
+    '''Returns the standard accuracy of dfa_tens on test_data, i.e.
+          (# examples in test_data classified correctly)/(total # examples in test_data)
+        = (# examples in test_data classified correctly)/NUM_EXAMPLES
 
     Parameters
     ----------
     dfa_tens: TensorGenerator object
      tensor on which to test accuracy on training data
+    test_data: set of tuples (string, bool)
+      the bool is either 0 or 1 and is whether the training string is accepted
+
     Returns
     -------
-    proportion of training_data samples that are correctly classified by dfa_tens
+    proportion of test_data samples that are correctly classified by dfa_tens
     '''
     correct = 0
     failed = 0
 
-    for key in training_data:
-        if training_data[key] == dfa_tens.checkAccepting([int(i) for i in key]): correct += 1
-        else: failed += 1
-
+    for string in test_data:
+        if test_data[string] == dfa_tens.checkAccepting([int(i) for i in string]):
+            correct += 1
+        else:
+            failed += 1
     return correct/(correct + failed)
+
+
+def f_accuracy(dfa_tens, test_data):
+    '''Returns the F1 accuracy of dfa_tens on test_data, i.e.
+          2*(# correctly classified positive examples)/
+            (# examples classified as positive + # positive examples in test_data)
+
+    Parameters
+    ----------
+    dfa_tens: TensorGenerator object
+     tensor on which to test accuracy on training data
+    test_data: dictionary where keys are strings and values are bools
+      the bool is either 0 or 1 and is whether the training string is accepted
+
+    Returns
+    -------
+    F1 score of dfa_tens on test_data
+    '''
+    try:
+        true_pos = 0
+        all_relevant = 0
+        all_pos = 0
+        for string in test_data:
+            if test_data[string] == 1:
+                all_relevant += 1
+                if test_data[string] == dfa_tens.checkAccepting([int(i) for i in string]):
+                    true_pos += 1
+            if dfa_tens.checkAccepting([int(i) for i in string]):
+                all_pos += 1
+        return 2 * true_pos / (all_pos + all_relevant)
+    except ZeroDivisionError as err:
+        print(err)
+        return 2
+
+
+def mult_accuracy(dfa_tens, test_data):
+    '''Returns the multiplicative accuracy (Kyle's accuracy) of dfa_tens on test_data, i.e.
+          (accuracy on positive examples) * (accuracy on negative examples)
+
+    Parameters
+    ----------
+    dfa_tens: TensorGenerator object
+     tensor on which to test accuracy on training data
+    test_data: dictionary where keys are strings and values are bools
+      the bool is either 0 or 1 and is whether the training string is accepted
+
+    Returns
+    -------
+    multiplicative accuracy of dfa_tens on test_data
+    '''
+    pos_data = {datum: test_data[datum] for datum in test_data if test_data[datum] == 1}
+    neg_data = {datum: test_data[datum] for datum in test_data if test_data[datum] == 0}
+    pos_acc = standard_accuracy(dfa_tens, pos_data)
+    neg_acc = standard_accuracy(dfa_tens, neg_data)
+    return pos_acc * neg_acc # TODO do we take the sqrt of this?
 
 
 def generator():
@@ -147,31 +216,35 @@ def sim():
     Returns proportion of DFAs with n or fewer states that are approximately
     correct (within Q_MIN accuracy)
     '''
-
-    tensor_success = False
     target_tens = get_dfa(NUM_STATES, NUM_SYM) # Randomly generate a target DFA, from which we will get training data
-    '''
-    training_data = get_examples(target_tens)
-    while tensor_success is False:
-        if (list(training_data.values()).__contains__(True)):
-            tensor_success = True
-        else:
-            target_tens = get_dfa(NUM_STATES, NUM_SYM)
-            training_data = get_examples(target_tens)
-    '''
-    training_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
+    test_data = get_examples(target_tens)
+    print(target_tens.tensor)
+
+    # MAKE SURE DFA ACCEPTS SOMETHING
+    # tensor_success = False
+    # while tensor_success is False:
+    #     if (list(test_data.values()).__contains__(True)):
+    #         tensor_success = True
+    #     else:
+    #         target_tens = get_dfa(NUM_STATES, NUM_SYM)
+    #         test_data = get_examples(target_tens)
+
+
+    # UNCOMMENT OF YOU WANT DIVISIBILITY-BY-5 TARGET DFA. YOU CAN ALTER GENERATOR FUNCTION FOR ANY SPECIFIC DFA
+    # test_data = generator()
 
     accurate = 0
     inaccurate = 0
 
     for i in range(NUM_SIM):
         test_dfa = get_dfa(NUM_STATES, NUM_SYM)
-        accuracy = test_accuracy(test_dfa, training_data)
-
-        if accuracy >= Q_MIN: accurate += 1
-        else: inaccurate += 1
+        accuracy = f_accuracy(test_dfa, test_data)
+        if accuracy <= 1:
+            if accuracy >= Q_MIN: accurate += 1
+            else: inaccurate += 1
 
     return accurate/(accurate + inaccurate)
+
 
 def sim2():
     '''
@@ -179,14 +252,14 @@ def sim2():
     '''
 
     target_tens = get_dfa(NUM_STATES, NUM_SYM) # Randomly generate a target DFA, from which we will get training data
-    training_data = get_examples(target_tens)
-    #training_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
+    test_data = get_examples(target_tens)
+    #test_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
 
     accuracy_l = []
 
     for i in range(NUM_SIM):
         test_dfa = get_dfa(NUM_STATES, NUM_SYM)
-        accuracy = test_accuracy(test_dfa, training_data)
+        accuracy = standard_accuracy(test_dfa, test_data)
         accuracy_l.append(accuracy)
 
     return accuracy_l

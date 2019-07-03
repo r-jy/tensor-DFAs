@@ -11,7 +11,7 @@ Ask Kate if you have questions :)
 import copy
 
 global STRING_LENGTH
-STRING_LENGTH = 10 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
+STRING_LENGTH = 3 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
 
 def get_strings(tensor, acc_state, str_len):
     '''

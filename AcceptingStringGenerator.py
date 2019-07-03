@@ -9,6 +9,7 @@ learning paper that it might not be.
 Ask Kate if you have questions :)
 '''
 import copy
+from numpy import random
 
 global STRING_LENGTH
 STRING_LENGTH = 3 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
@@ -74,8 +75,9 @@ def count_wrapper(dfa_tensor):
     strings = []
     for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
         tens = dfa_tensor.tensor # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
-        for string in get_strings(tens, accepting_state, STRING_LENGTH):
-            strings.append(string)
+        for length in range(STRING_LENGTH):
+            for string in get_strings(tens, accepting_state, length):
+                strings.append(string)
     return strings
 
 if __name__ == "__main__":

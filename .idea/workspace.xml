@@ -11,7 +11,6 @@
       <change afterPath="$PROJECT_DIR$/Plot for Standard Means for  mod 7  DFA Run 1  reachable.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Plot for Standard all for  mod 5  DFA Run 0  reachable.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Plot for Standard all for  mod 7  DFA Run 1 reachable.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generator.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/graph_log.txt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/pdf.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 50 trials, not reachable (1).png" afterDir="false" />
@@ -23,6 +22,10 @@
       <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 70 trials (3).png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/random dfa graph/Mod 5, 100 examples, 100 dfa, 70 trials (4).png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/random dfa graph/Plot of Means Using Multiplicative Score.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AcceptingStringGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/AcceptingStringGenerator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AccuracyGraphs.py" beforeDir="false" afterPath="$PROJECT_DIR$/AccuracyGraphs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DfaSearchSim.py" beforeDir="false" afterPath="$PROJECT_DIR$/DfaSearchSim.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TensorGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/TensorGenerator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/divisible_by_5.png" beforeDir="false" afterPath="$PROJECT_DIR$/random dfa graph/divisible_by_5.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/reachable.py" beforeDir="false" afterPath="$PROJECT_DIR$/reachable.py" afterDir="false" />
@@ -38,50 +41,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TensorGenerator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+            <state relative-caret-position="313">
+              <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reachable.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="990">
-              <caret line="67" selection-start-line="67" selection-end-line="67" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/STP.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Graph.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AcceptingStringGenerator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="43" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -89,17 +53,74 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DfaSearchSim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-385">
-              <caret line="41" selection-start-line="41" selection-end-line="41" />
+            <state relative-caret-position="60">
+              <caret line="4" column="18" lean-forward="true" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+              <folding>
+                <element signature="e#108#130#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AcceptingStringGenerator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="79" column="38" lean-forward="true" selection-start-line="79" selection-start-column="38" selection-end-line="79" selection-end-column="38" />
+              <folding>
+                <element signature="e#350#361#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AccuracyGraphs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+            <state relative-caret-position="405">
+              <caret line="27" column="32" lean-forward="true" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scratch.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1485">
+              <caret line="109" column="10" selection-start-line="109" selection-start-column="10" selection-end-line="109" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/scipy/stats/kde.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="7380">
+              <caret line="507" column="33" selection-start-line="507" selection-start-column="33" selection-end-line="507" selection-end-column="33" />
+              <folding>
+                <element signature="e#558#622#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core/shape_base.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="885">
+              <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pdf.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1815">
+              <caret line="130" column="20" selection-start-line="130" selection-start-column="20" selection-end-line="130" selection-end-column="20" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -133,6 +154,13 @@
       <find>tex</find>
       <find>pil</find>
       <find>latex</find>
+      <find>test_acc</find>
+      <find>training_data</find>
+      <find>num_sim</find>
+      <find>NUM_DFA</find>
+      <find>f_accu</find>
+      <find>st.</find>
+      <find>ACCURACY_TYPE</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -153,11 +181,13 @@
         <option value="$PROJECT_DIR$/Graph.py" />
         <option value="$PROJECT_DIR$/EmpiricalWalkFinding.py" />
         <option value="$PROJECT_DIR$/TensorGenerator2.py" />
-        <option value="$PROJECT_DIR$/AcceptingStringGenerator.py" />
         <option value="$PROJECT_DIR$/STP.py" />
-        <option value="$PROJECT_DIR$/TensorGenerator.py" />
+        <option value="$PROJECT_DIR$/pdf.py" />
+        <option value="$PROJECT_DIR$/scratch.py" />
         <option value="$PROJECT_DIR$/AccuracyGraphs.py" />
         <option value="$PROJECT_DIR$/DfaSearchSim.py" />
+        <option value="$PROJECT_DIR$/AcceptingStringGenerator.py" />
+        <option value="$PROJECT_DIR$/TensorGenerator.py" />
       </list>
     </option>
   </component>
@@ -188,7 +218,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -207,7 +238,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.DfaSearchSim">
+  <component name="RunManager" selected="Python.AcceptingStringGenerator">
     <configuration name="AcceptingStringGenerator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="tensor-DFAs" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -271,27 +302,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="EmpiricalWalkFinding" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="tensor-DFAs" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EmpiricalWalkFinding.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="TensorGenerator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="tensor-DFAs" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -313,13 +323,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="tensor-DFAs" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.AcceptingStringGenerator" />
+        <item itemvalue="Python.AccuracyGraphs" />
+        <item itemvalue="Python.scratch" />
         <item itemvalue="Python.DfaSearchSim" />
         <item itemvalue="Python.TensorGenerator" />
-        <item itemvalue="Python.AccuracyGraphs" />
-        <item itemvalue="Python.EmpiricalWalkFinding" />
-        <item itemvalue="Python.AcceptingStringGenerator" />
       </list>
     </recent_temporary>
   </component>
@@ -411,7 +442,21 @@
       <option name="project" value="LOCAL" />
       <updated>1560449898526</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Merge remote-tracking branch 'origin/distribution' into distribution&#10;&#10;# Conflicts:&#10;#&#9;AccuracyGraphs.py&#10;#&#9;TensorGenerator.py&#10;#&#9;__pycache__/DfaSearchSim.cpython-37.pyc&#10;#&#9;__pycache__/TensorGenerator.cpython-37.pyc">
+      <created>1560797735330</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1560797735330</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added confidence band to CDF plot">
+      <created>1561393461263</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1561393461263</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView">
@@ -425,6 +470,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="26" width="1415" height="821" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24677187" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -437,9 +483,9 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49928263" weight="0.32784638" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4985653" weight="0.32784638" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.4949785" visible="true" weight="0.32921812" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5050215" side_tool="true" visible="true" weight="0.32921812" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.4978479" weight="0.3580247" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4949785" weight="0.32921812" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5050215" side_tool="true" weight="0.32921812" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.4978479" visible="true" weight="0.3580247" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -474,7 +520,9 @@
     <MESSAGE value="Added AccuracyGraphs, which graphs threshold accuracy (q_min) vs proportion of Monte Carlo sampled DFAs that are above that accuracy on training data" />
     <MESSAGE value="Added some text on the side of graph that prints what constants are and added loop that averages accuracies over several runs" />
     <MESSAGE value="Added function to DfaSearchSim to make target DFA divisibility-by-5 DFA. Also deleted TensorGenerator (NOT TensorGenerator.py)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added function to DfaSearchSim to make target DFA divisibility-by-5 DFA. Also deleted TensorGenerator (NOT TensorGenerator.py)" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/distribution' into distribution&#10;&#10;# Conflicts:&#10;#&#9;AccuracyGraphs.py&#10;#&#9;TensorGenerator.py&#10;#&#9;__pycache__/DfaSearchSim.cpython-37.pyc&#10;#&#9;__pycache__/TensorGenerator.cpython-37.pyc" />
+    <MESSAGE value="Added confidence band to CDF plot" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added confidence band to CDF plot" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/TensorGenerator" />
@@ -550,10 +598,13 @@
     <entry file="file://$PROJECT_DIR$/dfaGraph6.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Graph.py">
+    <entry file="file://$PROJECT_DIR$/reachable.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="649">
+          <caret line="67" selection-start-line="67" selection-end-line="67" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -564,37 +615,91 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AcceptingStringGenerator.py">
+    <entry file="file://$PROJECT_DIR$/Graph.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="43" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="43" />
+        <state relative-caret-position="180">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TensorGenerator.py">
+    <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/scipy/linalg/basic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+        <state relative-caret-position="1357">
+          <caret line="382" selection-start-line="382" selection-end-line="382" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1485">
+          <caret line="109" column="10" selection-start-line="109" selection-start-column="10" selection-end-line="109" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/scipy/stats/kde.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7380">
+          <caret line="507" column="33" selection-start-line="507" selection-start-column="33" selection-end-line="507" selection-end-column="33" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
+            <element signature="e#558#622#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AccuracyGraphs.py">
+    <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy/core/shape_base.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
+        <state relative-caret-position="885">
+          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pdf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1815">
+          <caret line="130" column="20" selection-start-line="130" selection-start-column="20" selection-end-line="130" selection-end-column="20" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/AccuracyGraphs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="32" lean-forward="true" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TensorGenerator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DfaSearchSim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-385">
-          <caret line="41" selection-start-line="41" selection-end-line="41" />
+        <state relative-caret-position="60">
+          <caret line="4" column="18" lean-forward="true" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+          <folding>
+            <element signature="e#108#130#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AcceptingStringGenerator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="79" column="38" lean-forward="true" selection-start-line="79" selection-start-column="38" selection-end-line="79" selection-end-column="38" />
+          <folding>
+            <element signature="e#350#361#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

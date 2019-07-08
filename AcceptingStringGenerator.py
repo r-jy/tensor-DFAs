@@ -12,7 +12,7 @@ import copy
 from numpy import random
 
 global STRING_LENGTH
-STRING_LENGTH = 3 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
+STRING_LENGTH = 11 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
 
 def get_strings(tensor, acc_state, str_len):
     '''
@@ -72,6 +72,27 @@ def get_strings(tensor, acc_state, str_len):
 
 
 def count_wrapper(dfa_tensor):
+    '''Return a list of all STRING_LENGTH accepting strings for dfa_tensor
+
+    Parameters
+    ----------
+    dfa_tensor: TensorGenerator object
+      tensor for which to find accepting strings
+
+    Returns
+    -------
+    list of accepting strings of length STRING_LENGTH
+    '''
+
+    strings = []
+    for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
+        tens = dfa_tensor.tensor  # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
+        for string in get_strings(tens, accepting_state, STRING_LENGTH):
+            strings.append(string)
+    return strings
+
+
+def count_wrapper2(dfa_tensor):
     strings = []
     for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
         tens = dfa_tensor.tensor # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]

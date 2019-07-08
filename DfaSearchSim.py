@@ -4,13 +4,12 @@ import random
 import AcceptingStringGenerator
 import numpy as np
 
-NUM_STATES = 7 # number of states in target DFA (and randomly sampled test DFAs)
+NUM_STATES = 5 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
-NUM_EXAMPLES = 700 # number of training examples (WARNING: might not work as intended if this is odd)
+NUM_EXAMPLES = 500 # number of training examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = AcceptingStringGenerator.STRING_LENGTH # length of strings in training data
 NUM_SIM = 50 # number of random DFAs to test on training data
 Q_MIN = .3 # proportion of strings in training data that must be correctly classified as acccepting or rejecting for a DFA to be considered approximately correct
-ACCURACY_TYPE = 'standard_accuracy'
 
 # 1. Randomly generate DFA and training data
 
@@ -83,7 +82,6 @@ def get_examples(target_tens):
         for datum in range(NUM_EXAMPLES//2):
             datum_str = random.choice(accepted_str)
             test_data[datum_str] = True
-
     return test_data
 
 
@@ -230,7 +228,7 @@ def sim():
     #         test_data = get_examples(target_tens)
 
 
-    # UNCOMMENT OF YOU WANT DIVISIBILITY-BY-5 TARGET DFA. YOU CAN ALTER GENERATOR FUNCTION FOR ANY SPECIFIC DFA
+    # UNCOMMENT IF YOU WANT DIVISIBILITY-BY-5 TARGET DFA. YOU CAN ALTER GENERATOR FUNCTION FOR ANY SPECIFIC DFA
     # test_data = generator()
 
     accurate = 0
@@ -238,7 +236,7 @@ def sim():
 
     for i in range(NUM_SIM):
         test_dfa = get_dfa(NUM_STATES, NUM_SYM)
-        accuracy = f_accuracy(test_dfa, test_data)
+        accuracy = standard_accuracy(test_dfa, test_data)
         if accuracy <= 1:
             if accuracy >= Q_MIN: accurate += 1
             else: inaccurate += 1
@@ -246,7 +244,7 @@ def sim():
     return accurate/(accurate + inaccurate)
 
 
-def sim2():
+def sim2(num_test_dfa=NUM_SIM):
     '''
     Returns list of accuracies of DFAs with n or fewer states
     '''
@@ -257,7 +255,7 @@ def sim2():
 
     accuracy_l = []
 
-    for i in range(NUM_SIM):
+    for i in range(num_test_dfa):
         test_dfa = get_dfa(NUM_STATES, NUM_SYM)
         accuracy = standard_accuracy(test_dfa, test_data)
         accuracy_l.append(accuracy)

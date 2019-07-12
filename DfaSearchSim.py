@@ -3,12 +3,13 @@ import TensorGenerator
 import random
 import AcceptingStringGenerator
 import numpy as np
+import CompareDFAGenerator as cdg
 
 NUM_STATES = 5 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
 NUM_EXAMPLES = 500 # number of training examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = AcceptingStringGenerator.STRING_LENGTH # length of strings in training data
-NUM_SIM = 50 # number of random DFAs to test on training data
+NUM_SIM = 5000 # number of random DFAs to test on training data
 Q_MIN = .3 # proportion of strings in training data that must be correctly classified as acccepting or rejecting for a DFA to be considered approximately correct
 
 # 1. Randomly generate DFA and training data
@@ -262,3 +263,15 @@ def sim2(num_test_dfa=NUM_SIM):
 
     return accuracy_l
 
+def sim3(num_test_dfa = NUM_SIM, length = 3, alphabet = 2):
+    adfaset, cdfaset, tensor = cdg.getExampleDict(length, alphabet)
+    accuracy_a = []
+    accuracy_c = []
+
+    for i in range(num_test_dfa):
+        test_dfa = get_dfa(tensor.state, alphabet)
+        accuracy = (standard_accuracy(test_dfa, adfaset), standard_accuracy(test_dfa, cdfaset))
+        accuracy_a.append(accuracy[0])
+        accuracy_c.append(accuracy[1])
+
+    return accuracy_a, accuracy_c

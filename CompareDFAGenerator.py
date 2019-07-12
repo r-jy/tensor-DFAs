@@ -4,36 +4,46 @@ import TensorGenerator
 import AcceptingStringGenerator as asg
 import copy
 import csv
+import itertools as it
 
 def getStateNumbers(length, alphabet):
-    stringsOfLength = np.zeros(length)
-    strings = []
-    posStrings = []
-    strings.clear()
-    for i in range(0, length):
-        numberOfStrings = random.randint(0, alphabet**(i+1))
-        tempStrings = {}
-        tempPosStrings = set()
-        tempStrings.clear()
-        for j in range(numberOfStrings):
-            string = "".join([str(random.randint(0,1)) for k in range(i + 1)])
-            tempStrings[string] = True
-            tempPosStrings.add(string)
-        stringsOfLength[i] = len(tempStrings)
-        strings.append(tempStrings)
-        posStrings.append(tempPosStrings)
-    for i in range(length - 1, 0, -1):
-        tempStrings = strings[i]
-        #print(strings[i-1])
-        for j in tempStrings:
-            strings[i - 1][j[0:i]] = False
-        stringsOfLength[i - 1] = len(strings[i - 1])
+    #Let's try this differently. We'll start by making a probably cyclic DFA of length length.
+    tensor = TensorGenerator.TensorGenerator(length, alphabet)
+    #Now that we know the length of this tensor, we can note that the longest string required to express it has size 2 * length + 1.
+    #Thus, we should generate a random number of strings of that length. We note that the total size of such strings is
+    # alphabet**(2 * length + 1). This is the range from which we shall choose the random number.
+    numberOfStrings = random.randint(0, alphabet**(2 * length + 1))
+    print(numberOfStrings)
+    strings = {}
+    posStrings = set()
+    posStrings.clear()
+    stringsOfLength = [''.join(map(str, x)) for x in it.product(*[range(2)] * (2 * length + 1))]
+    posStrings = set(random.sample(stringsOfLength, numberOfStrings))
+    # for i in range(0, length):
+    #     numberOfStrings = random.randint(0, alphabet**(i+1))
+    #     tempStrings = {}
+    #     tempPosStrings = set()
+    #     tempStrings.clear()
+    #     for j in range(numberOfStrings):
+    #         string = "".join([str(random.randint(0,1)) for k in range(i + 1)])
+    #         tempStrings[string] = True
+    #         tempPosStrings.add(string)
+    #     stringsOfLength[i] = len(tempStrings)
+    #     strings.append(tempStrings)
+    #     posStrings.append(tempPosStrings)
+    # for i in range(length - 1, 0, -1):
+    #     tempStrings = strings[i]
+    #     #print(strings[i-1])
+    #     for j in tempStrings:
+    #         strings[i - 1][j[0:i]] = False
+    #     stringsOfLength[i - 1] = len(strings[i - 1])
     # + 2 for initial state and trash state
-    tensor = TensorGenerator.TensorGenerator(int(sum(stringsOfLength)) + 2, alphabet)
-    return stringsOfLength, strings, posStrings, tensor
+    #tensor = TensorGenerator.TensorGenerator(int(sum(stringsOfLength)) + 2, alphabet)
+    return posStrings, tensor
 
 def getExampleDict(length, alphabet):
-    a, b, c, tensor = getStateNumbers(length, alphabet)
+    c, tensor = getStateNumbers(length, alphabet)
+    numberOfStrings = 2 * length + 1
     adfaSet = {}
     strings = []
     strings.append(set())
@@ -41,7 +51,7 @@ def getExampleDict(length, alphabet):
     strings[0].update([str(i) for i in range(alphabet)])
     for i in strings[0]:
         adfaSet[i] = False
-    for i in range(1, length):
+    for i in range(1, 2 * length + 1):
         strings.append(set())
         strings[i].clear()
         for j in strings[i - 1]:
@@ -58,9 +68,8 @@ def getExampleDict(length, alphabet):
             cdfaSet[j] = False
     #print(cdfaSet)
     for i in c:
-        for j in i:
-            adfaSet[j] = True
-    for i in asg.count_wrapper2(tensor, tensor.state):
+        adfaSet[i] = True
+    for i in asg.count_wrapper2(tensor, numberOfStrings):
         cdfaSet[i] = True
 
     return adfaSet, cdfaSet, tensor

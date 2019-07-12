@@ -5,7 +5,7 @@ import scipy.stats as st
 #from statsmodels.stats.proportion import proportion_confint
 import numpy as np
 
-NUM_THRESH = 40
+NUM_THRESH = 100
 NUM_DFA = 50
 NUM_SAMPLED = 200 # TODO rename
 
@@ -94,6 +94,29 @@ def subplot_graph():
     plt.xlabel('Threshold Accuracy')
     plt.ylabel('Proportion of Randomly-Sampled DFA that are Approximately Accurate')
     return
+
+def cdfa_adfa_compare(length = 3, alphabet = 2):
+    '''
+    Plot proportion of randomly sampled DFAs that are approximately accurate to both an ADFA and a CDFA of the same size.
+    '''
+    plt.figure()
+    accuracy_a, accuracy_c = DfaSearchSim.sim3(length, alphabet)
+    thresh_array = []
+    above_thresh_a = []
+    above_thresh_c = []
+    for i in range(NUM_THRESH + 1):
+        thresh = i/NUM_THRESH
+        above_thresh_acc = ([acc for j, acc in enumerate(accuracy_a) if acc > thresh], [acc for j, acc in enumerate(accuracy_c) if acc > thresh])
+        thresh_array.append(thresh)
+        above_thresh_a.append(len(above_thresh_acc[0])/NUM_SAMPLED)
+        above_thresh_c.append(len(above_thresh_acc[1])/NUM_SAMPLED)
+    print(above_thresh_a)
+    print(above_thresh_c)
+    adfaplt = plt.plot(thresh_array, above_thresh_a)
+    cdfaplt = plt.plot(thresh_array, above_thresh_c)
+    plt.legend((adfaplt[0], cdfaplt[0]), ("adfaplt", "cdfaplt"))
+    return
+
 
 
 def general_plot():

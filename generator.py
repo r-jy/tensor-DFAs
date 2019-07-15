@@ -1,6 +1,8 @@
 import random
 import numpy as np
 import DfaSearchSim
+import TensorGenerator
+import AcceptingStringGenerator as asg
 STR_LENGTH=10
 NUM_EXAMPLES = 100
 ty = "uniform"
@@ -75,4 +77,27 @@ def dict2ls(dictionary):
         tuple_set.append((key, dictionary[key]))
     return tuple_set
 
-#def convert(pos,neg):
+def printDict(dict=dict()):
+    dictFile = open("dfa.dct", "w")
+    dictFile.writelines([" ".join(map(str, [len(list(dict.values())), 2])), '\n'])
+    for string in list(dict.keys()):
+        tempArray = []
+        tempArray.append(dict[string])
+        tempArray.append(len(string))
+        tempArray.extend([k for k in string])
+        dictFile.writelines([" ".join(map(str, tempArray)), '\n'])
+
+def randomDictGenerator(states):
+    tensor = TensorGenerator.TensorGenerator(states, 2)
+    randomStrings = ["".join(map(str, tuple([np.random.randint(2) for i in range(np.random.randint(1,states + 2))]))) for k in range(300 + states * 10)]
+    negStrings = list(filter(lambda x: not(tensor.checkAccepting([int(y) for y in x])), randomStrings))
+    print(len(negStrings))
+    selectedNeg = random.sample(negStrings, 150)
+    #print(len(selectedNeg))
+    posStrings = asg.count_wrapper2(tensor, states+2)
+    print(len(posStrings))
+    selectedPos = random.sample(posStrings, len(selectedNeg))
+    print(len(selectedPos))
+    dict = {i:1 for i in selectedPos}
+    dict.update({j:0 for j in selectedNeg})
+    return dict, tensor

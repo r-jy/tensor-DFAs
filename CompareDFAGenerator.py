@@ -19,6 +19,15 @@ def getStateNumbers(length, alphabet):
     posStrings.clear()
     stringsOfLength = [''.join(map(str, x)) for x in it.product(*[range(2)] * (2 * length + 1))]
     posStrings = set(random.sample(stringsOfLength, numberOfStrings))
+    listOfSets = [set() for k in range(2 * length + 1)]
+    listOfSets[2 * length] = posStrings
+    lengths = np.zeros(2 * length + 1)
+    lengths[2 * length] = len(posStrings)
+    for i in range(2 * length, 0, -1):
+        for j in listOfSets[i]:
+            listOfSets[i - 1].add(j[0:i])
+        lengths[i - 1] = len(listOfSets[i-1])
+    states = sum(lengths)
     # for i in range(0, length):
     #     numberOfStrings = random.randint(0, alphabet**(i+1))
     #     tempStrings = {}
@@ -39,10 +48,10 @@ def getStateNumbers(length, alphabet):
     #     stringsOfLength[i - 1] = len(strings[i - 1])
     # + 2 for initial state and trash state
     #tensor = TensorGenerator.TensorGenerator(int(sum(stringsOfLength)) + 2, alphabet)
-    return posStrings, tensor
+    return states, posStrings, tensor
 
 def getExampleDict(length, alphabet):
-    c, tensor = getStateNumbers(length, alphabet)
+    states, c, tensor = getStateNumbers(length, alphabet)
     numberOfStrings = 2 * length + 1
     adfaSet = {}
     strings = []
@@ -69,7 +78,7 @@ def getExampleDict(length, alphabet):
     #print(cdfaSet)
     for i in c:
         adfaSet[i] = True
-    for i in asg.count_wrapper2(tensor, numberOfStrings):
+    for i in asg.count_wrapper2(tensor, numberOfStrings + 1):
         cdfaSet[i] = True
 
     return adfaSet, cdfaSet, tensor

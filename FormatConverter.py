@@ -1,5 +1,5 @@
 # http://ivanzuzak.info/noam/webapps/fsm_simulator/
-def printNoam(tensor):
+def printNoam(tensor, file="noam.txt"):
     states = ['s' + str(i) for i in range(tensor.state)]
     accept = []
     for i in tensor.accept:
@@ -14,7 +14,7 @@ def printNoam(tensor):
                 if tensor.tensor[symbol][row][column] == 1:
                     output = states[column]
             transitions.append(input + ':' + alphabet[symbol] + '>' + output)
-    noamFile = open('noam.txt', 'w')
+    noamFile = open(file, 'w')
     noamFile.writelines(['#states', '\n'])
     for i in states:
         noamFile.writelines([i, '\n'])

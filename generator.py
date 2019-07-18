@@ -77,24 +77,24 @@ def dict2ls(dictionary):
         tuple_set.append((key, dictionary[key]))
     return tuple_set
 
-def printDict(dict=dict()):
-    dictFile = open("dfa.dct", "w")
+def printDict(dict=dict(), file="dfa.dct"):
+    dictFile = open(file, "w")
     dictFile.writelines([" ".join(map(str, [len(list(dict.values())), 2])), '\n'])
     for string in list(dict.keys()):
         tempArray = []
-        tempArray.append(dict[string])
+        tempArray.append(int(dict[string]))
         tempArray.append(len(string))
         tempArray.extend([k for k in string])
         dictFile.writelines([" ".join(map(str, tempArray)), '\n'])
 
 def randomDictGenerator(states):
     tensor = TensorGenerator.TensorGenerator(states, 2)
-    randomStrings = ["".join(map(str, tuple([np.random.randint(2) for i in range(np.random.randint(1,states + 2))]))) for k in range(300 + states * 10)]
+    randomStrings = ["".join(map(str, tuple([np.random.randint(2) for i in range(np.random.randint(1,states + 2))]))) for k in range(500)]
     negStrings = list(filter(lambda x: not(tensor.checkAccepting([int(y) for y in x])), randomStrings))
     print(len(negStrings))
     selectedNeg = random.sample(negStrings, 150)
     #print(len(selectedNeg))
-    posStrings = asg.count_wrapper2(tensor, states+2)
+    posStrings = asg.count_wrapper2(tensor, 15)
     print(len(posStrings))
     selectedPos = random.sample(posStrings, len(selectedNeg))
     print(len(selectedPos))

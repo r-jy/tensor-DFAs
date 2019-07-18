@@ -1,13 +1,14 @@
 import numpy
 import copy
 '''
+All functions here take the full TensorGenerator object.
 rows as input and columns as output. a[x][y]=1 iff x is input and y is output
 tensor is the transition tensor
 matrix is the reachability matrix
 '''
 
-def reachable(tensor, accepts):
-	
+def getReached(tensorfull):
+	tensor = tensorfull.tensor
 	# 1. create reachability matrix by combing transition matrix per alphabet
 
 	#matrix is reability matrix
@@ -61,7 +62,18 @@ def reachable(tensor, accepts):
 		
 		return True
 	'''
-	return len(reached.intersection(accepts)) > 0
+	return reached#, len(reached.intersection(accepts)) > 0
 
-	
+def getAccepted(tensor):
+	reached = getReached(tensor)
+	return reached.intersection(tensor.accept)
+
+def reachesAccepted(tensor):
+	reached = getReached(tensor)
+	return len(reached.intersection(tensor.accept)) > 0
+
+def reachesAll(tensor):
+	accepts = {i for i in range(tensor.state)}
+	reached = getReached(tensor)
+	return len(reached.intersection(accepts)) == len(accepts)
 #def compare():

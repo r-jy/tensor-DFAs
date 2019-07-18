@@ -93,10 +93,10 @@ def getTrainingSet(length, alphabet):
 def getCSV(adfaTuple, cdfaTuple, tensor):
     with open('adfa.csv', 'w') as adfacsv:
         adfawriter = csv.writer(adfacsv)
-        adfawriter.writerow(adfaTuple[0][0])
-        adfawriter.writerow(adfaTuple[0][1])
-        adfawriter.writerow(adfaTuple[1][0])
-        adfawriter.writerow(adfaTuple[1][1])
+        adfawriter.writerow(adfaTuple[0][0]) # training positive
+        adfawriter.writerow(adfaTuple[0][1]) # training negatibe
+        adfawriter.writerow(adfaTuple[1][0]) # testing+
+        adfawriter.writerow(adfaTuple[1][1]) # testing-
     with open('cdfa.csv', 'w') as cdfacsv:
         cdfawriter = csv.writer(cdfacsv)
         cdfawriter.writerow(cdfaTuple[0][0])

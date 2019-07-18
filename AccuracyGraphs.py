@@ -2,11 +2,11 @@ import matplotlib.pyplot as plt
 import DfaSearchSim
 from os import listdir
 import scipy.stats as st
-#from statsmodels.stats.proportion import proportion_confint
+from statsmodels.stats.proportion import proportion_confint
 import numpy as np
 
-NUM_THRESH = 100
-NUM_DFA = 50
+NUM_THRESH = 60
+NUM_DFA = 100
 NUM_SAMPLED = 200 # TODO rename
 
 def run_sim():
@@ -95,69 +95,48 @@ def subplot_graph():
     plt.ylabel('Proportion of Randomly-Sampled DFA that are Approximately Accurate')
     return
 
-def cdfa_adfa_compare(length = 3, alphabet = 2):
-    '''
-    Plot proportion of randomly sampled DFAs that are approximately accurate to both an ADFA and a CDFA of the same size.
-    '''
-    plt.figure()
-    accuracy_a, accuracy_c = DfaSearchSim.sim3(length, alphabet)
-    thresh_array = []
-    above_thresh_a = []
-    above_thresh_c = []
-    for i in range(NUM_THRESH + 1):
-        thresh = i/NUM_THRESH
-        above_thresh_acc = ([acc for j, acc in enumerate(accuracy_a) if acc > thresh], [acc for j, acc in enumerate(accuracy_c) if acc > thresh])
-        thresh_array.append(thresh)
-        above_thresh_a.append(len(above_thresh_acc[0])/NUM_SAMPLED)
-        above_thresh_c.append(len(above_thresh_acc[1])/NUM_SAMPLED)
-    print(above_thresh_a)
-    print(above_thresh_c)
-    adfaplt = plt.plot(thresh_array, above_thresh_a)
-    cdfaplt = plt.plot(thresh_array, above_thresh_c)
-    plt.legend((adfaplt[0], cdfaplt[0]), ("adfaplt", "cdfaplt"))
-    return
-
-
 
 def general_plot():
     '''
     This is just the code we have been using in a main block. I put it in a function.
     '''
-#     # UNCOMMENT IF YOU WANT 1-D HISTOGRAM OF ACTUAL ACCURACIES OF TEST DFA (PDF)
-#     accuracy_l = DfaSearchSim.sim2()
-#     plt.hist(accuracy_l, density=True)
-#     # kde = st.gaussian_kde(accuracy_l, bw_method='silverman')
-#     # plt.plot(np.linspace(0, 1, 100), kde(np.linspace(0, 1, 100)))
+
+    # # UNCOMMENT IF YOU WANT 1-D HISTOGRAM OF ACTUAL ACCURACIES OF TEST DFA (PDF)
+    # accuracy_l = DfaSearchSim.sim2()
+    # plt.hist(accuracy_l, density=True)
+    # # kde = st.gaussian_kde(accuracy_l, bw_method='silverman')
+    # # plt.plot(np.linspace(0, 1, 100), kde(np.linspace(0, 1, 100)))
+
 
     # UNCOMMENT IF YOU WANT PLOT OF Q_MIN VS # TEST DFA W/ ACCURACY > Q_MIN (CDF)
     # actual plotting (this is all you really need)
     q_min_l, low_bound_l, mean_l, up_bound_l = run_sim()
     
-    plt.plot(q_min_l, low_bound_l, 'b')
-    plt.plot(q_min_l, mean_l, 'r')
-    plt.plot(q_min_l, up_bound_l, 'b')
-#    error1 = [proportion_confint(approx_dfa_l[i]*DfaSearchSim.NUM_SIM, DfaSearchSim.NUM_SIM, alpha=0.05, method='normal') for i in range(NUM_THRESH+1)]
-#    error = [(conf_int[1] - conf_int[0])/2 for i, conf_int in enumerate(error1)]
-#    plt.errorbar(q_min_l, approx_dfa_l, yerr=error)
+    # plt.plot(q_min_l, low_bound_l, 'b')
+    # plt.scatter(q_min_l, mean_l, 'r')
+    # plt.plot(q_min_l, up_bound_l, 'b')
+    error1 = [proportion_confint(mean_l[i]*DfaSearchSim.NUM_SIM, DfaSearchSim.NUM_SIM, alpha=0.05, method='normal') for i in range(NUM_THRESH+1)]
+    error = [(conf_int[1] - conf_int[0])/2 for i, conf_int in enumerate(error1)]
+    plt.errorbar(q_min_l, mean_l, yerr=error, fmt='o')
 
     # add axes labels and title
-    plt.title('Proportion of Randomly-Sampled DFAs that are Approximately Accurate')
+    plt.title('Proportion of Randomly-Sampled DFAs that are Approximately Accurate \n with 95% Confidence Interval')
     plt.xlabel('Threshold Accuracy') #approximately accurate threshold proportion of correctly classified DFAs
     plt.ylabel('Proportion of DFA Above Threshold')
 
-#    # add sidebar showing the values of relevant constants
-#    textstr = 'Parameters'
-#    textstr2 = 'States in DFA: ' + str(DfaSearchSim.NUM_STATES) + ' \n' + \
-#               'Cardinality of alphabet: ' + str(DfaSearchSim.NUM_SYM) + ' \n' + \
-#               'Test strings: ' + str(DfaSearchSim.NUM_EXAMPLES) + ' \n' + \
-#               'Test string length: ' + str(DfaSearchSim.STR_LENGTH) + ' \n' + \
-#               'Number of test DFAs: ' + str(DfaSearchSim.NUM_SIM) + ' \n' + \
-#               'Simulations per threshold accuracy: ' + str(NUM_DFA)
-#               # 'Points per q_min: ' + str(NUM_DFA) + ' \n' + \
-#               # 'Number of q_min tested: ' + str(NUM_THRESH) + ' \n' + \
-#               # 'Number of simulations per graph point: ' + str(DfaSearchSim.NUM_SIM) 
-#    plt.text(0.92, 0.8, textstr, fontsize=14, fontweight='bold', transform=plt.gcf().transFigure)
-#    plt.text(0.92, .3, textstr2, fontsize=14, transform=plt.gcf().transFigure)
+    # # add sidebar showing the values of relevant constants
+    # textstr = 'Parameters'
+    # textstr2 = 'States in DFA: ' + str(DfaSearchSim.NUM_STATES) + ' \n' + \
+    #           'Cardinality of alphabet: ' + str(DfaSearchSim.NUM_SYM) + ' \n' + \
+    #           'Test strings: ' + str(DfaSearchSim.NUM_EXAMPLES) + ' \n' + \
+    #           'Test string length: ' + str(DfaSearchSim.STR_LENGTH) + ' \n' + \
+    #           'Number of test DFAs: ' + str(DfaSearchSim.NUM_SIM) + ' \n' + \
+    #           'Simulations per threshold accuracy: ' + str(NUM_DFA)
+    #           # 'Points per q_min: ' + str(NUM_DFA) + ' \n' + \
+    #           # 'Number of q_min tested: ' + str(NUM_THRESH) + ' \n' + \
+    #           # 'Number of simulations per graph point: ' + str(DfaSearchSim.NUM_SIM)
+    # plt.text(0.92, 0.8, textstr, fontsize=14, fontweight='bold', transform=plt.gcf().transFigure)
+    # plt.text(0.92, .3, textstr2, fontsize=14, transform=plt.gcf().transFigure)
 
 
     # # THIS IS KYLE'S CODE. IT IS NOT COMPATIBLE WITH THE CURRENT run_sim FUNCTION

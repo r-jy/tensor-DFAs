@@ -217,7 +217,6 @@ def sim():
     '''
     target_tens = get_dfa(NUM_STATES, NUM_SYM) # Randomly generate a target DFA, from which we will get training data
     test_data = get_examples(target_tens)
-    print(target_tens.tensor)
 
     # MAKE SURE DFA ACCEPTS SOMETHING
     # tensor_success = False

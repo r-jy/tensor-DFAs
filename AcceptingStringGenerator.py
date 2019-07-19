@@ -47,7 +47,7 @@ def get_strings(tensor, acc_state, str_len):
     string_table = [copy.deepcopy(matrix) for i in range(num_states)]
 
     # Now fill in table
-    for e in range(str_len + 1): # Loop for number of state transitions from 0 to str_len
+    for e in range(str_len + 1): # Loop for number of state transitions from 0 to str_len#
         for source in range(num_states):  # for source
             for dest in range(num_states):  # for destination
                 for sym in range(alphabet_size):
@@ -68,7 +68,8 @@ def get_strings(tensor, acc_state, str_len):
                                 for string in str_l.copy():
                                     string_table[source][dest][e].add(str(sym) + string)
 
-    return string_table[init_state][acc_state][str_len]
+    return string_table
+    #return string_table[init_state][acc_state][str_len]
 
 
 def count_wrapper(dfa_tensor):
@@ -83,22 +84,22 @@ def count_wrapper(dfa_tensor):
     -------
     list of accepting strings of length STRING_LENGTH
     '''
+    string_table = get_strings(dfa_tensor.tensor, 0, STRING_LENGTH)
+    strings = [i for a in dfa_tensor.accept for i in string_table[0][a][STRING_LENGTH]]
 
-    strings = []
-    for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
-        tens = dfa_tensor.tensor  # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
-        for string in get_strings(tens, accepting_state, STRING_LENGTH):
-            strings.append(string)
+    # for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
+    #     strings.extend(string_table[0][accepting_state][STRING_LENGTH])
     return strings
 
 
 def count_wrapper2(dfa_tensor, str_length = STRING_LENGTH):
-    strings = []
-    for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
-        tens = dfa_tensor.tensor # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
-        for length in range(str_length):
-            for string in get_strings(tens, accepting_state, length):
-                strings.append(string)
+    string_table = get_strings(dfa_tensor.tensor, 0, str_length)
+    strings = [i for a in dfa_tensor.accept for length in range(str_length) for i in string_table[0][a][length]]
+    # for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
+    #     tens = dfa_tensor.tensor # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
+    #     for length in range(str_length):
+    #         for string in get_strings(tens, accepting_state, length):
+    #             strings.append(string)
     return strings
 
 if __name__ == "__main__":

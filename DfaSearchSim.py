@@ -309,79 +309,103 @@ def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,thresh
 	Returns list of accuracies of DFAs with n or fewer states
 	'''
 	print('start dfa collection')
-	dfa_ls=[copy.deepcopy([]) for i in range(num_states) ]
-	for i in range(2,num_states*2):
+	dfa_ls=[copy.deepcopy([]) for i in range(num_states+1) ]
+	for i in range(2,(num_states+1)*2):
 		for j in range(450):
 			print(i,j)
 			dfa, num = get_dfa4(i,num_sym)
-			if num < num_states:
+			if num < num_states+1:
 				dfa_ls[num].append(dfa)
 		print('dfa collection process', i)
 	print("complete dfa collection")
 	x_axis=[]
 	y_axis=[]
 	print('start checking')
-	for i in range(2,num_states):
+	for i in range(2,num_states+1):
 			if len(dfa_ls[i])<minNum:
 				print('insufficient dfa')
 				a= 2/0
 	print('finish checking')
 	print('start testing')
-	for i in range(2,num):
+	for i in range(2,num_states+1):
 		print(' testing state',i)
 		ls = random.shuffle(dfa_ls[i])
 		accuracy_ls=[]
 		for j in range(minNum//perSample):
 			
-			print(' testing state',i, ' part ', j)
+			print(' testing state',i, ' part ', j,'getting test data')
+			
 			index = random.randrange(j,j+perSample)
+			
 			#target dfa
 			tensor,accept = dfa_ls[i][index]
 			
 			test_data = get_examples4(tensor,accept)
-			x_axis.append(test_data)
-	return x_axis
-'''
+			if len(test_data)==0:
+				print('not sufficient test data')
+				continue
+			print('getting accuracy')
 			for k in range(j*perSample,(j+1)*perSample):
 				if k != index:
-					test_dfa = dfa_ls[i][k]
-					accuracy = standard_accuracy(test_dfa,test_data)
+					test_dfa,test_accept = dfa_ls[i][k]
+					
+					accuracy = accuracy4(test_data,test_dfa,test_accept)
+
 					accuracy_ls.append(accuracy)
 		accuracy_ls = np.array(accuracy_ls)
 		accuracy_ls = accuracy_ls > 0.5
 		y_axis.append(np.sum(accuracy_ls)/30)
+		x_axis.append(i)
 		print(' state i accuracy ', np.sum(accuracy_ls)/30)
 
 	
 	plt.scatter(x_axis,y_axis)
 	plt.show()
 	return x_axis,y_axis
-'''
-def accuracy4(test_data, dfa,accept):
+
+# do not have label yet!
+# the data is weird
+def accuracy4(test_data,tensor,accept,pos=False):
+	totalCount = 0
 	count = 0
-	state = len(dfa[0])
-	init = [0]*state
-	init[0] = 1
-	final = [1 if i in accept else 0 for i in range(state)]
-	for i, label in test_data:
-		result = init
-		for j in i:
-			result=result @ dfa[j] 
-		if result == label:
-			count+=1
-	return count/len(test_data)
+	if pos:
+		for s in test_data:
+			if lookupString(s,tensor,accept):
+				count+=1
+			totalCount+=1
+	else:
+		for s, label in test_data:
+			if lookupString(s,accept) == label:
+				count+=1
+			totalCount+=1
+	return count/totalCount
+
+def lookupString(string, tensor,accept):
+	current_state = 0
+	for i in string:
+		current_state = iterCharInternal(current_state,tensor,int(i))
+	return current_state in accept
+def iterCharInternal(state,tensor, char):
+	row = tensor[char][state]
+	newstate = 0
+	return row.index(1)
+			
 
 def get_examples4(tensor, accept):
 	ls=[]
 	#accept = dfa.outputAccept()
 	numState = len(tensor[0])
+	table = acceptStrings(tensor, numState+1)
+
 	for i in range(1,numState):
-		table = acceptStrings(tensor,i)
 		for j in accept:
-			ls.append(table[0][j][i])
+			thing = table[0][j][i]
+			for k in thing:
+				ls.append(k)
+	ls = list(set(ls))
 	return ls
 
-def acceptStrings(tensor,str_len):
+def acceptStrings(tensor,maxLen):
 	init_state = 0
 
 	num_states = len(tensor[0]) # number of states in the DFA
@@ -389,12 +413,12 @@ def acceptStrings(tensor,str_len):
 	# Initialize table to be filled up using DP. The value string_table[source][dest][e] will
 	# store the possible walks from source to dest with exactly e edges
 	cell_content = set()
-	row = [copy.deepcopy(cell_content) for i in range(str_len + 1)]
+	row = [copy.deepcopy(cell_content) for i in range(maxLen)]
 	matrix = [copy.deepcopy(row) for i in range(num_states)]
 	string_table = [copy.deepcopy(matrix) for i in range(num_states)]
 
 	# Now fill in table
-	for e in range(str_len + 1): # Loop for number of state transitions from 0 to str_len
+	for e in range(maxLen): # Loop for number of state transitions from 0 to str_len
 		for source in range(num_states):  # for source
 			for dest in range(num_states):  # for destination
 				for sym in range(alphabet_size):

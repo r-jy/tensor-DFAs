@@ -86,7 +86,9 @@ def count_wrapper(dfa_tensor):
 
     strings = []
     for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
-        tens = dfa_tensor.tensor  # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
+    #for accepting_state in [0,1]:
+        tens = dfa_tensor.tensor  # TODO hardcoded dfa_tensor.tensor
+        #tens = [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
         for string in get_strings(tens, accepting_state, STRING_LENGTH):
             strings.append(string)
     return strings

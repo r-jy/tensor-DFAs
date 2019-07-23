@@ -304,24 +304,49 @@ def get_dfa4(state,sym):
 			k = random.randrange(0,state)
 			tensor[i][j][k]=1
 	return (tensor,accept), reachesAll(tensor)
-def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,threshold=0.6):
-	'''
-	Returns list of accuracies of DFAs with n or fewer states
-	'''
+
+def getData4(num_states=20,num_sym=2,minNum=450,perSample=30):
 	print('start dfa collection')
+	numSample = minNum//perSample
 	dfa_ls=[copy.deepcopy([]) for i in range(num_states+1) ]
 	for i in range(2,(num_states+1)*2):
 		for j in range(450):
-			print(i,j)
+			#print(i,j)
 			dfa, num = get_dfa4(i,num_sym)
 			if num < num_states+1:
 				dfa_ls[num].append(dfa)
 		print('dfa collection process', i)
 	print("complete dfa collection")
+	print('start checking')
+	for i in range(2,num_states+1):
+			print('state number', i , 'number of dfa', len(dfa_ls[i]))
+			if len(dfa_ls[i])<minNum:
+				print('insufficient dfa')
+				a= 2/0
+	print('finish checking')
+	return dfa_ls
+
+def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,stringSize = 300,threshold=0.4):
+	'''
+	Returns list of accuracies of DFAs with n or fewer states
+	'''
+	print('start dfa collection')
+	numSample = minNum//perSample
+	dfa_ls=[copy.deepcopy([]) for i in range(num_states+1) ]
+	for i in range(2,(num_states+1)*2):
+		for j in range(450):
+			#print(i,j)
+			dfa, num = get_dfa4(i,num_sym)
+			if num < num_states+1:
+				dfa_ls[num].append(dfa)
+		print('dfa collection process', i)
+	print("complete dfa collection")
+
 	x_axis=[]
 	y_axis=[]
 	print('start checking')
 	for i in range(2,num_states+1):
+			print('state number', i , 'number of dfa', len(dfa_ls[i]))
 			if len(dfa_ls[i])<minNum:
 				print('insufficient dfa')
 				a= 2/0
@@ -340,45 +365,78 @@ def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,thresh
 			#target dfa
 			tensor,accept = dfa_ls[i][index]
 			
+			print('getting pre made pos for state',i,'part', j)
 			test_data = get_examples4(tensor,accept)
-			if len(test_data)==0:
+			
+			if len(test_data)==0 or test_data is None:
 				print('not sufficient test data')
 				continue
-			print('getting accuracy')
+			
+			random.shuffle(test_data)
+			
+			if len(test_data)>stringSize//2:
+				pos_test_data= test_data[0:stringSize//2]
+			else:
+				pos_test_data=test_data
+
+			posCount = len(pos_test_data)
+			
+			negCount = 0
+			
+			neg_test_data = []
+			print('getting random for state',i,'part', j)
+			for k in range(stringSize+100):
+				length = random.randint( 1,num_states)
+				s = ''.join( [ str( random.randrange( num_sym ) ) for l in range(length) ] )
+				
+				if lookupString(s, tensor, accept):
+					if posCount< stringSize//2:
+						posCount+=1
+						pos_test_data.append(s)
+				elif not lookupString(s,tensor, accept):
+					if  negCount< stringSize//2:
+						negCount+=1
+						neg_test_data.append(s)
+					
+			print('testing accuracy for state',i,'part', j)
+			part_ls=[]
 			for k in range(j*perSample,(j+1)*perSample):
 				if k != index:
+					totalCount = 0
+					correctCount = 0
 					test_dfa,test_accept = dfa_ls[i][k]
-					
-					accuracy = accuracy4(test_data,test_dfa,test_accept)
-
-					accuracy_ls.append(accuracy)
+					if len(pos_test_data) !=0 :
+						correctCount += accuracy4(pos_test_data,test_dfa,test_accept, True)
+						totalCount += stringSize//2
+					if len(neg_test_data) !=0 :
+						correctCount += accuracy4(neg_test_data,test_dfa,test_accept,False)
+						totalCount += stringSize//2
+					part_ls.append(correctCount/totalCount)
+					print(correctCount/totalCount)
+			accuracy_ls.append(np.mean(np.array(part_ls)))
 		accuracy_ls = np.array(accuracy_ls)
-		accuracy_ls = accuracy_ls > 0.5
-		y_axis.append(np.sum(accuracy_ls)/30)
+		accuracy_ls = accuracy_ls > threshold
+		score = np.sum(accuracy_ls)/perSample
+		if score>1:
+			print("Error")
+			print(accuracy_ls)
+			a=2/0
+		y_axis.append(score)
 		x_axis.append(i)
-		print(' state i accuracy ', np.sum(accuracy_ls)/30)
+		print(' state i accuracy ', score)
 
 	
 	plt.scatter(x_axis,y_axis)
 	plt.show()
 	return x_axis,y_axis
 
-# do not have label yet!
-# the data is weird
-def accuracy4(test_data,tensor,accept,pos=False):
+def accuracy4(test_data,tensor,accept,condition):
 	totalCount = 0
 	count = 0
-	if pos:
-		for s in test_data:
-			if lookupString(s,tensor,accept):
-				count+=1
-			totalCount+=1
-	else:
-		for s, label in test_data:
-			if lookupString(s,accept) == label:
-				count+=1
-			totalCount+=1
-	return count/totalCount
+	for s in test_data:
+		if lookupString(s,tensor,accept) == condition:
+			count+=1
+	return count
 
 def lookupString(string, tensor,accept):
 	current_state = 0
@@ -392,10 +450,12 @@ def iterCharInternal(state,tensor, char):
 			
 
 def get_examples4(tensor, accept):
+	startTime = time.time()
+	print(len(tensor[0]))
 	ls=[]
 	#accept = dfa.outputAccept()
 	numState = len(tensor[0])
-	table = acceptStrings(tensor, numState+1)
+	table = acceptStrings4(tensor, numState+1)
 
 	for i in range(1,numState):
 		for j in accept:
@@ -403,9 +463,10 @@ def get_examples4(tensor, accept):
 			for k in thing:
 				ls.append(k)
 	ls = list(set(ls))
+	print(time.time()-startTime, 'seconds')
 	return ls
 
-def acceptStrings(tensor,maxLen):
+def acceptStrings4(tensor,maxLen):
 	init_state = 0
 
 	num_states = len(tensor[0]) # number of states in the DFA

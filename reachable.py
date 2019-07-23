@@ -7,8 +7,8 @@ tensor is the transition tensor
 matrix is the reachability matrix
 '''
 
-def getReached(tensorfull):
-	tensor = tensorfull.tensor
+def getReached(tensor):
+	
 	# 1. create reachability matrix by combing transition matrix per alphabet
 
 	#matrix is reability matrix
@@ -64,16 +64,15 @@ def getReached(tensorfull):
 	'''
 	return reached#, len(reached.intersection(accepts)) > 0
 
-def getAccepted(tensor):
+def getAccepted(tensor,accept):
 	reached = getReached(tensor)
-	return reached.intersection(tensor.accept)
+	return reached.intersection(accept)
 
-def reachesAccepted(tensor):
+def reachesAccepted(tensor,accept):
 	reached = getReached(tensor)
-	return len(reached.intersection(tensor.accept)) > 0
+	return len(reached.intersection(tensor)) > 0
 
 def reachesAll(tensor):
-	accepts = {i for i in range(tensor.state)}
 	reached = getReached(tensor)
-	return len(reached.intersection(accepts)) == len(accepts)
+	return len(reached)
 #def compare():

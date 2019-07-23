@@ -33,8 +33,8 @@ class TensorGenerator:
 		row = [0 for i in range(self.state)]
 		matrix = [copy.deepcopy(row) for i in range(self.state)]
 		self.tensor = [copy.deepcopy(matrix) for i in range(self.symbol)]
-		self.charID = numpy.identity(self.symbol)
-		self.stateID = numpy.identity(self.state)
+		# self.charID = numpy.identity(self.symbol)
+		# self.stateID = numpy.identity(self.state)
 
 	def randomize(self):
 		numberAccept = random.randrange(1,self.state)
@@ -44,10 +44,10 @@ class TensorGenerator:
 			for j in range(self.state):
 				k = random.randrange(0,self.state)
 				self.tensor[i][j][k]=1
-		temptensor = []
-		for i in range(self.symbol):
-			temptensor.append(numpy.transpose(self.tensor[i]))
-		self.STM = numpy.concatenate(temptensor, 1)
+		# temptensor = []
+		# for i in range(self.symbol):
+		# 	temptensor.append(numpy.transpose(self.tensor[i]))
+		# self.STM = numpy.concatenate(temptensor, 1)
 		#self.swappedSTM = STP.STP.compute(self.STM, SwapMatrix.SwapMatrix.getMatrix(self.state, self.symbol))
 		return self.tensor
 

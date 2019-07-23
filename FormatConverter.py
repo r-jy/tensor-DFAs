@@ -1,7 +1,7 @@
 import re
 
 # http://ivanzuzak.info/noam/webapps/fsm_simulator/
-def printNoam(tensor, file="noam.txt"):
+def tensorToNoam(tensor, file="noam.txt"):
     states = ['s' + str(i) for i in range(tensor.state)]
     accept = []
     for i in tensor.accept:
@@ -81,3 +81,32 @@ def parseDot(file="ans.dot"):
             delta[stateDict[startState]][symbolDict[symbol]] = stateDict[endState]
 
     return initState, accStates, delta
+
+def deltaToNoam(initState, accStates, delta, file="noam.txt"):
+    noamFile = open(file, 'w')
+    noamFile.writelines(['#states', '\n'])
+    noamFile.writelines([f"s{i}\n" for i in range(len(delta))])
+    noamFile.writelines(['#initial\n', f's{initState}\n'])
+    noamFile.writelines(['#accepting\n'])
+    noamFile.writelines([f"s{i}\n" for i in accStates])
+    noamFile.writelines(['#alphabet\n'])
+    noamFile.writelines([f"{i}\n" for i in range(len(delta[0]))])
+    noamFile.writelines(['#transitions\n'])
+    noamFile.writelines([f"s{start}:{symbol}>s{delta[start][symbol]}\n" for symbol in range(len(delta[0])) for start in range(len(delta))])
+
+def abbadingoToGD(file="dfa.dct"):
+    abFile = open(file, 'r')
+    abString = abFile.read()
+    abStringList = abString.split('\n')
+    infoString = abStringList.pop(0)
+    infoStringList = infoString.split(' ')
+    numberOfExamples = int(infoStringList[0])
+    train = []
+    for i in range(numberOfExamples):
+        stringArray = []
+        exampleString = abStringList.pop(0)
+        exampleStringList = list(map(int, exampleString.split(' ')))
+        correct = exampleStringList[0]
+        stringArray = exampleStringList[2:]
+        train.append((stringArray, correct))
+    return train

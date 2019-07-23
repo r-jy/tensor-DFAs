@@ -88,7 +88,7 @@ def main2(examples,states):
 			optim.step()
 
 		acc = 0
-		for x, y in test_pos+test_neg:
+		for x, y in test:
 			print(model(x))
 			acc += (model(x).item() > 0) == (y > 0)
 

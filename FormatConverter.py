@@ -2,6 +2,20 @@ import re
 
 # http://ivanzuzak.info/noam/webapps/fsm_simulator/
 def tensorToNoam(tensor, file="noam.txt"):
+    '''
+    get a drawing of a DFA
+
+    generates text that can be input into the following webpage
+    http://ivanzuzak.info/noam/webapps/fsm_simulator/
+    to get a drawing of the DFA encoded by the TensorGenerator
+    object tensor
+
+    Parameters
+    ----------
+    tensor: TensorGenerator object
+    file: str
+      file to put noam readable text into
+    '''
     states = ['s' + str(i) for i in range(tensor.state)]
     accept = []
     for i in tensor.accept:

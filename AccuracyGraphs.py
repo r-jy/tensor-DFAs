@@ -1,11 +1,10 @@
 import matplotlib.pyplot as plt
 import DfaSearchSim
-from os import listdir
-import scipy.stats as st
+import os
 from statsmodels.stats.proportion import proportion_confint
 import numpy as np
 
-NUM_THRESH = 60
+NUM_THRESH = 40
 NUM_DFA = 100
 NUM_SAMPLED = 200 # TODO rename
 
@@ -47,16 +46,48 @@ def run_sim():
 def subplot_graph():
     '''
     Plot proportion of randomly-sampled DFAs that are approximately accurate for 9 different target DFA
+
+    Right now this function is producing two different figures,
+    the second of which is just the right half of the forst
+    with slight modifications
     '''
+    color_l = ['mediumvioletred', 'lightseagreen', 'darkgreen',
+               'sandybrown', 'firebrick', 'rebeccapurple',
+               'cadetblue', 'darkgoldenrod', 'indigo']
 
     # (1) Initialize figure with 9 subplots
-    fig, axs = plt.subplots(3, 3, sharex=True, sharey=True)
+    # fig, axs = plt.subplots(3, 3, sharex=True, sharey=True)
+
+    fig, axs = plt.subplots(ncols=6, nrows=3, sharex=True, sharey=True)
+    gs = axs[1, 2].get_gridspec()
+    # remove the underlying axes
+    for ax in axs[0:, 3]:
+        ax.remove()
+    for ax in axs[0:, 4]:
+        ax.remove()
+    for ax in axs[0:, 5]:
+        ax.remove()
+
+    axbig = fig.add_subplot(gs[0:, 3:])
+
+    fig.tight_layout()
+
 
     # These lists are used only for the second figure
     thresh_l_l = []
     above_thresh_l_l = []
     for row in range(3): # Iterate over each subplot
         for column in range(3):
+
+            # Initialize array to hold error bar lengths
+            err = []
+
+            # clean directory of auxilary files
+            i = row*3+column
+            file = "Kate_noam" + str(i) + ".txt"
+            if os.path.exists(file):
+                os.remove(file)
+                print(file + " removed from directory")
 
             # Get accuracies for NUM_SAMPLED DFAs and plot the proportion of which are over each threshold accuracy
             accuracy_l = DfaSearchSim.sim2(NUM_SAMPLED)
@@ -66,29 +97,34 @@ def subplot_graph():
             for i in range(NUM_THRESH + 1):
                 thresh = i / NUM_THRESH
                 above_thresh_acc = [acc for j, acc in enumerate(accuracy_l) if acc > thresh]
+                above_thresh_prop = len(above_thresh_acc)/NUM_SAMPLED
 
                 # fill in lists to plot
                 thresh_l.append(thresh)
-                above_thresh_l.append(len(above_thresh_acc)/NUM_SAMPLED)
+                above_thresh_l.append(above_thresh_prop)
 
-            axs[row, column].plot(thresh_l, above_thresh_l)
+                # add error
+                err.append(1.96*(above_thresh_prop*(1-above_thresh_prop)/NUM_SAMPLED)**(1/2))
+
+            axs[row, column].errorbar(thresh_l, above_thresh_l, err, c=color_l[row*3+column])
 
             # Used only for the second figure
             thresh_l_l.append(thresh_l)
             above_thresh_l_l.append(above_thresh_l)
 
-    # Label axes and add title
-    plt.suptitle('Proportion of Randomly-Sampled ' +
-               str(DfaSearchSim.NUM_STATES) + '-State DFA that Approximate a Target DFA')
-    axs[2,1].set_xlabel('Threshold Accuracy')
-    axs[1,0].set_ylabel('Proportion of Randomly-Sampled DFA that are Approximately Accurate')
+    for i, thresh_l in enumerate(thresh_l_l):
+        axbig.plot(thresh_l, above_thresh_l_l[i], marker='x', c=color_l[i])
 
-    plt.show()
+    # Label axes and add title
+    plt.suptitle('Proportion of Randomly-Sampled ' + str(DfaSearchSim.NUM_STATES) + '-State DFA that Approximate a Target DFA')
+    axs[2,2].set_xlabel('Threshold Accuracy')
+    axs[1,0].set_ylabel('Proportion of Randomly-Sampled DFA that are Approximately Accurate')
+    plt.ylim([0,1])
 
     # (2) Create second figure with "hurricane tracking" plotting of previous data (all on top of each other)
     plt.figure()
     for i, thresh_l in enumerate(thresh_l_l):
-        plt.plot(thresh_l, above_thresh_l_l[i])
+        plt.plot(thresh_l, above_thresh_l_l[i], marker='o', c=color_l[i])
 
     plt.title('Spaghetti Plot (each line represents a different target DFA)')
     plt.xlabel('Threshold Accuracy')

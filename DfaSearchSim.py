@@ -8,51 +8,39 @@ import CompareDFAGenerator as cdg
 import time
 import copy
 from reachable import reachesAll
+from os import path
+import FormatConverter
 NUM_STATES = 5 # number of states in target DFA (and randomly sampled test DFAs)
 NUM_SYM = 2 # number of symbols in alphabet of language accepted DFAs in search space
 NUM_EXAMPLES = 100 # number of training examples (WARNING: might not work as intended if this is odd)
 STR_LENGTH = AcceptingStringGenerator.STRING_LENGTH # length of strings in training data
-NUM_SIM = 5000 # number of random DFAs to test on training data
+NUM_SIM = 500 # number of random DFAs to test on training data
 Q_MIN = .3 # proportion of strings in training data that must be correctly classified as acccepting or rejecting for a DFA to be considered approximately correct
 
 # 1. Randomly generate DFA and training data
 
 def get_dfa(state_num, sym_num):
-	'''
-	Randomly generates a DFA (tensor representation) with state_num states
-	and sym_num symbols in its alphabet
+    '''
+    Randomly generates a DFA (tensor representation) with state_num states
+    and sym_num symbols in its alphabet
 
-	Parameters
-	----------
-	state_num: int
-	  number of states in DFA to generate
-	sym_num: int
-	  cardinality of alphabet in DFA to generate
+    Parameters
+    ----------
+    state_num: int
+      number of states in DFA to generate
+    sym_num: int
+      cardinality of alphabet in DFA to generate
 
-	Returns
-	-------
-	TensorGenerator object (which is a DFA tensor)
-	'''
-	count = 0
-	dfa = TensorGenerator.TensorGenerator(state_num, sym_num)
-	return dfa,reachesAll(dfa.tensor)
-	'''
-	# check connectivity
-	connected = True
-	for dest_state in range(1,state_num):
-		if connected == True:
-			connected = False
-			for str_len in range(1,state_num):
-				if connected == False:
-					if AcceptingStringGenerator.get_strings(dfa.tensor, dest_state, str_len) != set():
-						connected = True
-		else: connected = False
+    Returns
+    -------
+    TensorGenerator object (which is a DFA tensor)
+    '''
+    dfa = TensorGenerator.TensorGenerator(state_num, sym_num)
+    if reachesAll(dfa.tensor) == state_num:
+        return dfa
+    else:
+        return get_dfa(state_num,sym_num)
 
-	if connected:
-		return dfa
-	else:
-		return get_dfa(state_num, sym_num)
-	'''
 
 def get_examples(target_tens):
 	'''
@@ -88,6 +76,32 @@ def get_examples(target_tens):
 		for datum in range(NUM_EXAMPLES//2):
 			datum_str = random.choice(accepted_str)
 			test_data[datum_str] = True
+	return test_data
+
+def get_examples2(target_tens):
+	'''
+	Generates training data set with NUM_EXAMPLES strings of length STR_LENGTH
+	WHERE EVERY STRING IS ACCEPTING
+
+	Parameters
+	----------
+	target_tens: TensorGenerator object
+	  tensor representation of a DFA as encoded by TensorGenerator class
+
+	Returns
+	-------
+	dictionary of ACCEPTING training examples
+	'''
+	test_data = {}
+
+	# Generate NUM_EXAMPLES/2 random strings
+	# We're assuming these will probably not be accepted so we'll have a 50/50 dist acc/rej strings
+	for datum in range(NUM_EXAMPLES):
+		# Randomly generate string
+		datum_str = ''
+		for i in range(STR_LENGTH):
+			datum_str += str(random.randint(0,NUM_SYM-1)) # make a list of characters to test
+		test_data[datum_str] = 1
 	return test_data
 
 
@@ -250,33 +264,38 @@ def sim():
 
 
 def sim2(num_test_dfa=NUM_SIM):
-	'''
-	Returns list of accuracies of DFAs with n or fewer states
-	'''
-	totalTime=time.time()
-	startTime = time.time()
-	target_tens = get_dfa(NUM_STATES, NUM_SYM) # Randomly generate a target DFA, from which we will get training data
-	print('finish get dfa', time.time()-startTime)
-	startTime=time.time()
-	test_data = get_examples(target_tens)
-	print('finish get examples',time.time()-startTime)
-	#test_data = generator() # TODO uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
+    '''
+    Returns list of accuracies of DFAs with n or fewer states
+    '''
+    totalTime = time.time()
+    startTime = time.time()
+    target_tens = get_dfa(NUM_STATES, NUM_SYM)  # Randomly generate a target DFA, from which we will get training data
+    for i in range(9):
+        file = "Kate_noam" + str(i) + ".txt"
+        if not path.exists(file):
+            FormatConverter.tensorToNoam(target_tens, file=file)
+            # print('file #' + str(i) + '\nrow=' + str(i // 3) + '\ncolumn=' + str(i % 3))
+            break
 
-	accuracy_l = []
-	
+    startTime = time.time()
+    test_data = get_examples(target_tens)
+    # print('finish get examples',time.time()-startTime)
+    # test_data = get_examples2(target_tens) # uncomment if you want divisibility-by-5 target DFA. Can also change generator function to be divisibility-by-[any number]
 
-	for i in range(num_test_dfa):
-		startTime = time.time()
-		test_dfa = get_dfa(NUM_STATES, NUM_SYM)
-	
-		print('get test dfa ', i, 'take time', time.time()-startTime)
-		startTime=time.time()
-		accuracy = standard_accuracy(test_dfa, test_data)
-		print('get accuracy',i,' take time', time.time()-startTime)
-		
-		accuracy_l.append(accuracy)
-	print('total ', time.time()-totalTime)
-	return accuracy_l
+    accuracy_l = []
+
+    for i in range(num_test_dfa):
+        startTime = time.time()
+        test_dfa = get_dfa(NUM_STATES, NUM_SYM)
+
+        # print('get test dfa ', i, 'take time', time.time()-startTime)
+        startTime = time.time()
+        accuracy = standard_accuracy(test_dfa, test_data)
+        # print('get accuracy',i,' take time', time.time()-startTime)
+
+        accuracy_l.append(accuracy)
+    # print('total ', time.time()-totalTime)
+    return accuracy_l
 
 def sim3(num_test_dfa = NUM_SIM, length = 3, alphabet = 2):
 	adfaset, cdfaset, tensor = cdg.getExampleDict(length, alphabet)
@@ -290,6 +309,7 @@ def sim3(num_test_dfa = NUM_SIM, length = 3, alphabet = 2):
 		accuracy_c.append(accuracy[1])
 
 	return accuracy_a, accuracy_c
+
 def get_dfa4(state,sym):
 	accept=set()
 
@@ -316,21 +336,21 @@ def getData4(num_states=20,num_sym=2,minNum=450,perSample=30):
 			if num < num_states+1:
 				dfa_ls[num].append(dfa)
 		print('dfa collection process', i)
-	print("complete dfa collection")
-	print('start checking')
+	#print("complete dfa collection")
+	#print('start checking')
 	for i in range(2,num_states+1):
 			print('state number', i , 'number of dfa', len(dfa_ls[i]))
 			if len(dfa_ls[i])<minNum:
 				print('insufficient dfa')
 				a= 2/0
-	print('finish checking')
+	#print('finish checking')
 	return dfa_ls
 
 def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,stringSize = 300,threshold=0.4):
 	'''
 	Returns list of accuracies of DFAs with n or fewer states
 	'''
-	print('start dfa collection')
+	# print('start dfa collection')
 	numSample = minNum//perSample
 	dfa_ls=[copy.deepcopy([]) for i in range(num_states+1) ]
 	for i in range(2,(num_states+1)*2):
@@ -340,11 +360,11 @@ def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,string
 			if num < num_states+1:
 				dfa_ls[num].append(dfa)
 		print('dfa collection process', i)
-	print("complete dfa collection")
+	# print("complete dfa collection")
 
 	x_axis=[]
 	y_axis=[]
-	print('start checking')
+	# print('start checking')
 	for i in range(2,num_states+1):
 			print('state number', i , 'number of dfa', len(dfa_ls[i]))
 			if len(dfa_ls[i])<minNum:
@@ -364,31 +384,31 @@ def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,string
 			
 			#target dfa
 			tensor,accept = dfa_ls[i][index]
-			
+
 			print('getting pre made pos for state',i,'part', j)
 			test_data = get_examples4(tensor,accept)
-			
+
 			if len(test_data)==0 or test_data is None:
 				print('not sufficient test data')
 				continue
-			
+
 			random.shuffle(test_data)
-			
+
 			if len(test_data)>stringSize//2:
 				pos_test_data= test_data[0:stringSize//2]
 			else:
 				pos_test_data=test_data
 
 			posCount = len(pos_test_data)
-			
+
 			negCount = 0
-			
+
 			neg_test_data = []
 			print('getting random for state',i,'part', j)
 			for k in range(stringSize+100):
 				length = random.randint( 1,num_states)
 				s = ''.join( [ str( random.randrange( num_sym ) ) for l in range(length) ] )
-				
+
 				if lookupString(s, tensor, accept):
 					if posCount< stringSize//2:
 						posCount+=1
@@ -397,7 +417,7 @@ def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,string
 					if  negCount< stringSize//2:
 						negCount+=1
 						neg_test_data.append(s)
-					
+
 			print('testing accuracy for state',i,'part', j)
 			part_ls=[]
 			for k in range(j*perSample,(j+1)*perSample):
@@ -425,7 +445,7 @@ def sim4(num_states=20,num_test=1,num_sym=2, minNum = 450, perSample = 30,string
 		x_axis.append(i)
 		print(' state i accuracy ', score)
 
-	
+
 	plt.scatter(x_axis,y_axis)
 	plt.show()
 	return x_axis,y_axis

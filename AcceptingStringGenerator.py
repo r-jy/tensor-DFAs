@@ -14,18 +14,14 @@ from numpy import random
 global STRING_LENGTH
 STRING_LENGTH = 11 # length of accepting strings to generate # TODO should I make this MAX_LENGTH? (max string length)
 
-def get_strings(tensor, acc_state, str_len):
+def get_strings(tensor, str_len):
     '''
     Parameters
     ----------
     tensor: tensor attribute of object of TensorGenerator class
       tensor representation of DFA
-    init_state: int
-      initial state (also index of initial state)
-    acc_state: int
-      accepting state (also index of accepting state)
     str_len: int
-      size of walk, which is the length of strings that will be generated
+      size of walk, which is the maximum length of strings that will be generated
 
     Returns
     -------
@@ -35,7 +31,6 @@ def get_strings(tensor, acc_state, str_len):
     --------
     Assume initial state is 0
     '''
-    init_state = 0
     num_states = len(tensor[0]) # number of states in the DFA
     alphabet_size = len(tensor) # number of symbols in alphabet
 
@@ -69,8 +64,6 @@ def get_strings(tensor, acc_state, str_len):
                                     string_table[source][dest][e].add(str(sym) + string)
 
     return string_table
-    #return string_table[init_state][acc_state][str_len]
-
 
 def count_wrapper(dfa_tensor):
     '''Return a list of all STRING_LENGTH accepting strings for dfa_tensor
@@ -84,8 +77,8 @@ def count_wrapper(dfa_tensor):
     -------
     list of accepting strings of length STRING_LENGTH
     '''
-    string_table = get_strings(dfa_tensor.tensor, 0, STRING_LENGTH)
-    strings = [i for a in dfa_tensor.accept for i in string_table[0][a][STRING_LENGTH]]
+    string_table = get_strings(dfa_tensor.tensor, STRING_LENGTH)
+    strings = [string for accept_state in dfa_tensor.accept for string in string_table[0][accept_state][STRING_LENGTH]]
 
     # for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
     #     strings.extend(string_table[0][accepting_state][STRING_LENGTH])
@@ -93,8 +86,8 @@ def count_wrapper(dfa_tensor):
 
 
 def count_wrapper2(dfa_tensor, str_length = STRING_LENGTH):
-    string_table = get_strings(dfa_tensor.tensor, 0, str_length)
-    strings = [i for a in dfa_tensor.accept for length in range(str_length) for i in string_table[0][a][length]]
+    string_table = get_strings(dfa_tensor.tensor, str_length)
+    strings = [string for accept_state in dfa_tensor.accept for length in range(str_length) for string in string_table[0][accept_state][length]]
     # for accepting_state in dfa_tensor.accept:  # Find strings for every possible accepting state # TODO Hardcoded {4,5,6} # dfa_tensor.accept {0,1}
     #     tens = dfa_tensor.tensor # TODO hardcoded dfa_tensor.tensor [[[0, 1, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1], [0, 0, 1]]]
     #     for length in range(str_length):
